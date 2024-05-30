@@ -8,10 +8,9 @@ FCAL_NAMEs = '1934-638'
 
 
 #----- Observation ---------------------------------------#
-TELESCOPE = 'ATCA'       # VLA, EVLA, ATCA
-ARRAY_CONFIG = ''      # {A, B, C, D} for VLA,...
-
+TELESCOPE = 'ATCA'
 BAND = 'C'
+
 BAND_DEFINITIONS = {
     'L':[1e9, 2e9],
     'S':[2e9, 4e9],

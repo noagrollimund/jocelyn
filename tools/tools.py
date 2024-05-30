@@ -228,17 +228,4 @@ def find_best_solint(myms, target, refant):
         ax.legend(loc = 'upper right')
         print('P(<=3) = {0} ({1})'.format(stats.percentileofscore(snr, 3), solint))
     plt.savefig('SNR_gaincal_SC_vs_solint.png')
-
-def google_sheets(info):
-    today = str(date.today())
-    date_obs = info['datetime']['date']
-    MJD = round(info['datetime']['MJD'], 3)
-    day_number = round(MJD - 52719, 2)
-    MJD, day_number = str(MJD), str(day_number)
-    fields = [info['fields'][type_field] for type_field in ['fcal', 'pcal', 'target']]
-    info_list = [today, date_obs, MJD, day_number, cfg.ARRAY_CONFIG, cfg.BAND] + fields
-    with open('/'.join([cfg.PATH_BAND, 'google_sheets.txt']), "w") as f:
-        f.write('\t'.join(info_list))
-    print('----------------------------')
-    print('Info for Google Sheets saved')
-    print('----------------------------')
+    
