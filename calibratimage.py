@@ -157,8 +157,9 @@ def deconvolve_VLA(info):
     target = info['fields']['target']
     myms_target = myms.replace('.ms', '_target.ms')
     imagename = cfg.PATH_images + '/' + myms.replace('.ms', '')
-    cell = info['tclean']['cell']
-    imsize = info['tclean']['imsize']
+    cell_auto, imsize_auto, _ = au.pickCellSize(vis = myms, npix = 5, imsize = True)
+    cell = cell_auto if cfg.CELL == '' else cfg.CELL
+    imsize = imsize_auto if cfg.IMSIZE == '' else cfg.IMSIZE
     split(vis = myms,
           outputvis = myms_target,
           field = target,

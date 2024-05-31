@@ -1,11 +1,9 @@
-import glob, json, os, sys
+import glob, json, os
 import numpy as np
 import pandas as pd
 from casatasks import importvla, importatca, listobs, split, flagdata
 import config as cfg
 import tools.tools as tools
-sys.path.append(os.path.expanduser('~') + '/analysis_scripts/')
-import analysisUtils as au
 
 def import_archive(master_ms):
     if not os.path.exists(master_ms):
@@ -35,10 +33,6 @@ def get_info(master_ms):
     MJD, date, time = tools.get_date_time(list_obs, master_ms, target)
     myms = '_'.join([cfg.SOURCE, cfg.TELESCOPE, date, cfg.BAND + 'band.ms'])
 
-    cell_auto, imsize_auto, _ = au.pickCellSize(vis = master_ms, npix = 5, imsize = True)
-    cell = cell_auto if cfg.CELL == '' else cfg.CELL
-    imsize = imsize_auto if cfg.IMSIZE == '' else cfg.IMSIZE
-
     info = {
         "ms":myms,
         "spw":spw,
@@ -53,10 +47,6 @@ def get_info(master_ms):
             "MJD":MJD,
             "date":date,
             "time":time
-        },
-        'tclean':{
-            'cell':cell,
-            'imsize':imsize
         }
     }
     if not os.path.exists(cfg.PATH_BAND):
