@@ -17,7 +17,7 @@ def selfcal(myms, imagename):
     applycal(vis = myms,
              gaintable = SC)
     jocelyn_clean(ms = myms,
-                  imagename = imagename,
+                  imagename = imagename + '_selfcal',
                   usemask = 'user',
                   savemodel = 'none')
 
