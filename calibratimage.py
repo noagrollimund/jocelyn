@@ -360,7 +360,6 @@ def selfcal_ATCA(info):
     print('--------------------------')
     myms_target = myms.replace('.ms', '_target.ms')
     export_ms(myms_selfcal, myms_target, target)
-    return gaintables
 
 def jocelyn_clean(ms = '',
                   field = '',
