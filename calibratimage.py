@@ -194,7 +194,7 @@ def calibrate_ATCA(info):
     G1 = cfg.PATH_tables + 'cal.G1'
     F0 = cfg.PATH_tables + 'cal.F0'
     D0 = cfg.PATH_tables + 'cal.D0'
-    BL = cfg.PATH_tables + 'cal.BL'
+    # BL = cfg.PATH_tables + 'cal.BL'
 
     # Initial Flux Density Scaling
     setjy(vis = myms,
