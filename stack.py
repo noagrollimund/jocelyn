@@ -6,18 +6,26 @@ import config as cfg
 def selfcal(myms, imagename):
     jocelyn_clean(ms = myms,
                   datacolumn = 'data',
-                  imagename = imagename)
-    SC = 'cal.SC'
-    gaincal(vis = myms,
-            caltable = SC,
-            solint = '80s',
-            refant = 'CA04',
-            calmode = 'p',
-            gaintype = 'T')
-    applycal(vis = myms,
-             gaintable = SC)
+                  imagename = imagename + '_init')
+    n_rounds = 3
+    gaintables = []
+    for round in range(n_rounds):
+        SC = 'cal.SC' + str(round + 1)
+        img_name = imagename + '_selfcal' + str(round + 1)
+        gaincal(vis = myms,
+                caltable = SC,
+                solint = '80s',
+                refant = 'CA04',
+                calmode = 'p',
+                gaintype = 'T',
+                gaintable = gaintables)
+        gaintables.append(SC)
+        applycal(vis = myms,
+                 gaintable = gaintables)
+        jocelyn_clean(ms = myms,
+                      imagename = img_name)
     jocelyn_clean(ms = myms,
-                  imagename = imagename + '_selfcal',
+                  imagename = imagename + '_final',
                   usemask = 'user',
                   savemodel = 'none')
 
@@ -28,7 +36,6 @@ def main(path_stack):
     concat(vis = list_of_target_ms,
            concatvis = myms)
     imagename = myms.replace('.ms', '')
-    
     # jocelyn_clean(ms = myms,
     #               datacolumn = 'data',
     #               imagename = imagename,
