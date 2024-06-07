@@ -36,12 +36,14 @@ def main(path_stack):
     concat(vis = list_of_target_ms,
            concatvis = myms)
     imagename = myms.replace('.ms', '')
-    # jocelyn_clean(ms = myms,
-    #               datacolumn = 'data',
-    #               imagename = imagename,
-    #               usemask = 'user',
-    #               savemodel = 'none')
-    selfcal(myms, imagename)
+    if cfg.STACK_SELFCAL:
+        selfcal(myms, imagename)
+    else:
+        jocelyn_clean(ms = myms,
+                      datacolumn = 'data',
+                      imagename = imagename,
+                      usemask = 'user',
+                      savemodel = 'none')
 
 if __name__ == "__main__":
     main(sys.argv[1])
