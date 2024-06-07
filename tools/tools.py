@@ -1,14 +1,12 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from scipy import stats
 import json
+from scipy import stats
 from astropy.time import Time
 from casatasks import flagdata, gaincal
 from casatools import table, msmetadata
 import config as cfg
-
-    
 
 def select_keys_with_kwrd(dict, keyword):
     return [key for key in dict.keys() if key[:len(keyword)] == keyword]
@@ -227,4 +225,3 @@ def find_best_solint(myms, target, refant):
         ax.legend(loc = 'upper right')
         print('P(<=3) = {0} ({1})'.format(stats.percentileofscore(snr, 3), solint))
     plt.savefig('SNR_gaincal_SC_vs_solint.png')
-    
