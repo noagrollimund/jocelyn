@@ -1,8 +1,9 @@
-import json, os
+import json, os, sys
+from casatasks import gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, blcal, polcal, statwt
 import tools.tools as tools
 import config as cfg
-from casatasks import gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, blcal, polcal, statwt
-import tools.analysis_scripts.analysisUtils as au
+sys.path.append('~/analysis_scripts/')
+import analysisUtils as au
 
 def calibrate_VLA(info):
     target = info['fields']['target']

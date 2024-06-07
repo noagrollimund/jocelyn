@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from scipy import stats
 import json
 from astropy.time import Time
-from datetime import date
 from casatasks import flagdata, gaincal
 from casatools import table, msmetadata
 import config as cfg
