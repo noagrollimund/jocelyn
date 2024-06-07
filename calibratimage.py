@@ -1,9 +1,8 @@
-import json, os, sys
+import json, os
 import tools.tools as tools
 import config as cfg
-from casatasks import gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, blcal, polcal
-sys.path.append(os.path.expanduser('~') + '/analysis_scripts/')
-import analysisUtils as au
+from casatasks import gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, blcal, polcal, statwt
+import tools.analysis_scripts.analysisUtils as au
 
 def calibrate_VLA(info):
     target = info['fields']['target']
@@ -360,6 +359,9 @@ def selfcal_ATCA(info):
     print('--------------------------')
     myms_target = myms.replace('.ms', '_target.ms')
     export_ms(myms_selfcal, myms_target, target)
+    if cfg.STACK_OBS:
+        statwt(vis = myms_target,
+               datacolumn = 'data')
 
 def jocelyn_clean(ms = '',
                   field = '',
