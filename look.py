@@ -133,14 +133,6 @@ def manual_flagging(info):
         print('Manual flagging completed')
         print('-------------------------')
 
-def inspect_data(info):
-    myms = info['ms']
-    print('-----------------------------------------------------------------------------------')
-    print('Now flag data manually:\n')
-    print("plotms(vis = '{}', field = '0', coloraxis = 'ant1')\n".format(myms))
-    print("flagdata(vis = '{}', mode = 'manual', antenna = 'VAxx')".format(myms))
-    print('-----------------------------------------------------------------------------------')
-
 def main():
     master_ms = cfg.PATH_OBS + '/master.ms'
     import_archive(master_ms)
@@ -150,9 +142,6 @@ def main():
         auto_flagging(info)
     if cfg.MANUAL_FLAG:
         manual_flagging(info)
-    if cfg.TELESCOPE == 'VLA':
-        tools.google_sheets(info)
-        inspect_data(info)
 
 if __name__ == "__main__":
     main()
