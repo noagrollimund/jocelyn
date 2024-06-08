@@ -1,5 +1,5 @@
 import json, os, sys
-from casatasks import gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, blcal, polcal, statwt
+from casatasks import gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, polcal, statwt
 import tools
 import config as cfg
 sys.path.append(os.path.expanduser('~') + '/analysis_scripts/')
@@ -194,7 +194,6 @@ def calibrate_ATCA(info):
     G1 = cfg.PATH_tables + 'cal.G1'
     F0 = cfg.PATH_tables + 'cal.F0'
     D0 = cfg.PATH_tables + 'cal.D0'
-    # BL = cfg.PATH_tables + 'cal.BL'
 
     # Initial Flux Density Scaling
     setjy(vis = myms,
@@ -282,23 +281,6 @@ def calibrate_ATCA(info):
     print('---------------')
     print('Data calibrated')
     print('---------------')
-
-    # Baseline-based Calibration
-    # blcal(vis = myms,
-    #       field = fcal,
-    #       caltable = BL,
-    #       solint = 'inf',
-    #       gaintable = [K0, B0, D0, F0],
-    #       gainfield = ['', '', '', pcal],
-    #       interp = ['', '', '', 'nearest'],
-    #       freqdep = True)
-    # applycal(vis = myms,
-    #          field = target,
-    #          gaintable = [K0, B0, D0, F0, BL],
-    #          gainfield = ['', '', '', pcal, fcal])
-    # print('-----------------------------------------')
-    # print('Baseline-based error correction completed')
-    # print('-----------------------------------------')
 
 def selfcal_ATCA(info):
     myms = info['ms']
