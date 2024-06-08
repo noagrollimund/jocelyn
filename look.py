@@ -13,13 +13,9 @@ def import_archive(master_ms):
         elif cfg.TELESCOPE == 'ATCA':
             archive_filename = glob.glob(cfg.PATH_OBS + '/*.C*')
             importatca(vis = master_ms, files = archive_filename, options = 'birdie, noac')
-        print('----------------')
-        print('Archive imported')
-        print('----------------')
+        tools.jocelyn_log('Archive imported')
     else:
-        print('------------------------')
-        print('Archive already imported')
-        print('------------------------')
+        tools.jocelyn_log('Master MS found')
 
 def get_info(master_ms):
     spw, freq = tools.get_spw(master_ms, cfg.BAND)
@@ -53,9 +49,7 @@ def get_info(master_ms):
         os.makedirs(cfg.PATH_BAND)
     with open(cfg.PATH_JSON, "w") as write_file:
         json.dump(info, write_file)
-    print('---------------------')
-    print('Information collected')
-    print('---------------------')
+    tools.jocelyn_log('Information collected')
     return info
 
 def split_ms(master_ms, info):
@@ -72,9 +66,7 @@ def split_ms(master_ms, info):
           scan = ','.join(scans),
           datacolumn = 'data')
     listobs(myms, listfile = cfg.PATH_BAND + 'list.obs')
-    print('-----------')
-    print('MS splitted')
-    print('-----------')
+    tools.jocelyn_log('MS splitted')
 
 def flag_cal_uvrange(myms, fcal, pcal):
     for cal_field in [pcal, fcal]:
@@ -118,20 +110,16 @@ def auto_flagging(info):
                 mode = 'shadow',
                 tolerance = 0.0)
         flag_cal_uvrange(myms, fcal, pcal)
-    print('-----------------------')
-    print('Auto-flagging completed')
-    print('-----------------------')
+    tools.jocelyn_log('Auto-flagging completed')
 
 def manual_flagging(info):
     myms = cfg.PATH_BAND + info['ms']
     flags_filename = glob.glob(cfg.PATH_OBS + '/*_flags.py')[0]
     if flags_filename == []:
-        print('No flagging file found.')
+        tools.jocelyn_log('No flagging file found')
     else:
         exec(open(flags_filename).read(), {'myms': myms})
-        print('-------------------------')
-        print('Manual flagging completed')
-        print('-------------------------')
+        tools.jocelyn_log('Manual flagging completed')
 
 def main():
     master_ms = cfg.PATH_OBS + '/master.ms'

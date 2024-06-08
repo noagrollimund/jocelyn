@@ -147,10 +147,7 @@ def calibrate_VLA(info):
                 gaintable = tables,
                 gainfield = ['', '', fcal],
                 calwt = False)
-    
-    print('---------------')
-    print('Data calibrated')
-    print('---------------')
+    tools.jocelyn_log('Data calibrated')
 
 def deconvolve_VLA(info):
     myms = info['ms']
@@ -174,9 +171,7 @@ def deconvolve_VLA(info):
            weighting = cfg.WEIGHTING,
            robust = cfg.ROBUST,
            niter = 200)
-    print('-----------------')
-    print('Image deconvolved')
-    print('-----------------')
+    tools.jocelyn_log('Image deconvolved')
 
 def calibrate_ATCA(info):
     target = info['fields']['target']
@@ -278,9 +273,7 @@ def calibrate_ATCA(info):
              gainfield = ['', '', '', pcal],
              interp = ['', '', '', 'linear'],
              parang = True)
-    print('---------------')
-    print('Data calibrated')
-    print('---------------')
+    tools.jocelyn_log('Data calibrated')
 
 def selfcal_ATCA(info):
     myms = info['ms']
@@ -337,9 +330,7 @@ def selfcal_ATCA(info):
                   field = target,
                   imagename = imagename,
                   nsigma = nsigmas[-1])
-    print('--------------------------')
-    print('Self-calibration completed')
-    print('--------------------------')
+    tools.jocelyn_log('Self-calibration completed')
     myms_target = myms.replace('.ms', '_target.ms')
     export_ms(myms_selfcal, myms_target, target)
     if cfg.STACK_OBS:
@@ -410,9 +401,7 @@ def main():
     os.chdir(cfg.PATH_BAND)
     with open(cfg.PATH_JSON, 'r') as read_file:
         info = json.load(read_file)
-    print('------------------')
-    print('Information loaded')
-    print('------------------')
+    tools.jocelyn_log('Information loaded')
     if cfg.TELESCOPE == 'VLA':
         calibrate_VLA(info)
         deconvolve_VLA(info)

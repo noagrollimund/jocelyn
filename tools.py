@@ -8,6 +8,9 @@ from casatasks import flagdata, gaincal
 from casatools import table, msmetadata
 import config as cfg
 
+def jocelyn_log(message):
+    print('--/jocelyn/--:' + message)
+
 def select_keys_with_kwrd(dict, keyword):
     return [key for key in dict.keys() if key[:len(keyword)] == keyword]
 
