@@ -91,7 +91,7 @@ def flag_cal_uvrange(myms, fcal, pcal):
             except:
                 pass
 
-def auto_flagging(info):
+def basic_flagging(info):
     myms = cfg.PATH_BAND + info['ms']
     fcal = info['fields']['fcal']
     pcal = info['fields']['pcal']
@@ -110,7 +110,7 @@ def auto_flagging(info):
                 mode = 'shadow',
                 tolerance = 0.0)
         flag_cal_uvrange(myms, fcal, pcal)
-    tools.jocelyn_log('Auto-flagging completed')
+    tools.jocelyn_log('Basic flagging completed')
 
 def manual_flagging(info):
     myms = cfg.PATH_BAND + info['ms']
@@ -126,8 +126,8 @@ def main():
     import_archive(master_ms)
     info = get_info(master_ms)
     split_ms(master_ms, info)
-    if cfg.AUTO_FLAG:
-        auto_flagging(info)
+    if cfg.BASIC_FLAG:
+        basic_flagging(info)
     if cfg.MANUAL_FLAG:
         manual_flagging(info)
 

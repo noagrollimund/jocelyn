@@ -2,9 +2,9 @@ import os
 
 #----- Source and calibrators ----------------------------#
 SOURCE = '4U1755'
-TARGET_NAMEs = '4U1755-33'
-PCAL_NAMEs = '1729-37'
-FCAL_NAMEs = '1934-638'
+TARGET = '4U1755-33'
+PCAL = '1729-37'
+FCAL = '1934-638'
 
 
 #----- Observation ---------------------------------------#
@@ -40,7 +40,7 @@ PATH_images = PATH_BAND + 'images/'
 
 
 #----- Flagging ------------------------------------------#
-AUTO_FLAG = True
+BASIC_FLAG = True
 MANUAL_FLAG = True
 
 

@@ -9,7 +9,7 @@ from casatools import table, msmetadata
 import config as cfg
 
 def jocelyn_log(message):
-    print('--/jocelyn/--:' + message)
+    print('--/jocelyn/--: ' + message)
 
 def select_keys_with_kwrd(dict, keyword):
     return [key for key in dict.keys() if key[:len(keyword)] == keyword]
@@ -27,36 +27,36 @@ def get_spw(myms, band_name):
     return ', '.join(spw), np.mean(freq)
 
 def get_target_fcal(myms):
-    if type(cfg.TARGET_NAMEs) == str:
-        target_name = cfg.TARGET_NAMEs
+    if type(cfg.TARGET) == str:
+        target_name = cfg.TARGET
     else:
         tb = table(myms + '/FIELD')
         fields = tb.getcol('NAME')
         tb.close()
         for field in fields:
-            if field in cfg.TARGET_NAMEs:
+            if field in cfg.TARGET:
                 target_name = field
-    if type(cfg.FCAL_NAMEs) == str:
-        fcal_name = cfg.FCAL_NAMEs
+    if type(cfg.FCAL) == str:
+        fcal_name = cfg.FCAL
     else:
         tb = table(myms + '/FIELD')
         fields = tb.getcol('NAME')
         tb.close()
         for field in fields:
-            if field in cfg.FCAL_NAMEs:
+            if field in cfg.FCAL:
                 fcal_name = field
     return target_name, fcal_name
 
 def get_pcal(obs, myms):
-    if type(cfg.PCAL_NAMEs) == str:
-        pcal_name = cfg.PCAL_NAMEs
+    if type(cfg.PCAL) == str:
+        pcal_name = cfg.PCAL
     else:
         tb = table(myms + '/FIELD')
         fields = tb.getcol('NAME')
         tb.close()
         for field in fields:
             scans_all = get_scans(obs)
-            if field in cfg.PCAL_NAMEs:
+            if field in cfg.PCAL:
                 scans = check_scans(obs, myms, field)
                 if scans != []:
                     scan_idx = scans_all.index(int(scans[0]))
@@ -99,7 +99,7 @@ def check_scans(obs, myms, field_name_select = None):
         field_name = str(obs[scan_name]['0']['FieldName'])
         is_target = field_name == target
         is_fcal = field_name == fcal
-        is_pcal_close = field_name in cfg.PCAL_NAMEs and is_close_to_target(obs, myms, i)
+        is_pcal_close = field_name in cfg.PCAL and is_close_to_target(obs, myms, i)
         if field_name_select != None:
             good_field = field_name == field_name_select
             if (is_target or is_fcal or is_pcal_close) and good_field:
