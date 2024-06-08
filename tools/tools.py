@@ -45,17 +45,20 @@ def get_target_fcal(myms):
     return target_name, fcal_name
 
 def get_pcal(obs, myms):
-    tb = table(myms + '/FIELD')
-    fields = tb.getcol('NAME')
-    tb.close()
-    for field in fields:
-        scans_all = get_scans(obs)
-        if field in cfg.PCAL_NAMEs:
-            scans = check_scans(obs, myms, field)
-            if scans != []:
-                scan_idx = scans_all.index(int(scans[0]))
-                if is_close_to_target(obs, myms, scan_idx):
-                    pcal_name = field
+    if type(cfg.PCAL_NAMEs) == str:
+        pcal_name = cfg.PCAL_NAMEs
+    else:
+        tb = table(myms + '/FIELD')
+        fields = tb.getcol('NAME')
+        tb.close()
+        for field in fields:
+            scans_all = get_scans(obs)
+            if field in cfg.PCAL_NAMEs:
+                scans = check_scans(obs, myms, field)
+                if scans != []:
+                    scan_idx = scans_all.index(int(scans[0]))
+                    if is_close_to_target(obs, myms, scan_idx):
+                        pcal_name = field
     return pcal_name
 
 def scan2field_name(obs, scan_idx):
