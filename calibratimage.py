@@ -19,13 +19,13 @@ def calibrate_VLA(info):
     refant = tools.find_best_refant(info)
 
     # Antenna position corrections
-    working_ants = tools.antenna_dist2cofa(myms)
-    antennas, antpos_corr = tools.VLA_corrected_baselines(date, time, working_ants)
-    gencal(vis = myms,
-           caltable = cfg.PATH_tables + 'antpos.cal',
-           caltype = 'antposvla',
-           antenna = antennas,
-           parameter = antpos_corr)
+    # working_ants = tools.antenna_dist2cofa(myms)
+    # antennas, antpos_corr = tools.VLA_corrected_baselines(date, time, working_ants)
+    # gencal(vis = myms,
+    #        caltable = cfg.PATH_tables + 'antpos.cal',
+    #        caltype = 'antposvla',
+    #        antenna = antennas,
+    #        parameter = antpos_corr)
 
     # Opacity corrections
     high_frequencies = cfg.BAND in ['Ku', 'K', 'Q']
@@ -48,7 +48,8 @@ def calibrate_VLA(info):
 
     if high_frequencies:
         # Gain calibration
-        tables = [cfg.PATH_tables + table for table in ['antpos.cal', 'opacity.cal', 'gaincurve.cal']]
+        # tables = [cfg.PATH_tables + table for table in ['antpos.cal', 'opacity.cal', 'gaincurve.cal']]
+        tables = [cfg.PATH_tables + table for table in ['opacity.cal', 'gaincurve.cal']]
         gaincal(vis = myms,
                 caltable = cfg.PATH_tables + 'intphase.gcal',
                 field = ','.join([fcal, pcal]),
@@ -88,22 +89,23 @@ def calibrate_VLA(info):
         applycal(vis = myms,
                 field = target, 
                 gaintable = tables + [cfg.PATH_tables + 'scanphase.gcal'],
-                gainfield = ['', '', '', pcal, pcal, pcal],
+                gainfield = len(tables) * [''] + [pcal, pcal, pcal],
                 calwt = False)
         applycal(vis = myms,
                 field = pcal,
                 gaintable = tables + [cfg.PATH_tables + 'intphase.gcal'],
-                gainfield = ['', '', '', pcal, pcal, pcal],
+                gainfield = len(tables) * [''] + [pcal, pcal, pcal],
                 calwt = False)
         applycal(vis = myms,
                 field = fcal, 
                 gaintable = tables + [cfg.PATH_tables + 'intphase.gcal'],
-                gainfield = ['', '', '', fcal, fcal, fcal],
+                gainfield = len(tables) * [''] + [fcal, fcal, fcal],
                 calwt = False)
 
     else:
         # Gain calibration
-        tables = [cfg.PATH_tables + table for table in ['antpos.cal', 'gaincurve.cal']]
+        # tables = [cfg.PATH_tables + table for table in ['antpos.cal', 'gaincurve.cal']]
+        tables = [cfg.PATH_tables + table for table in ['gaincurve.cal']]
         gaincal(vis = myms,
             caltable = cfg.PATH_tables + 'gaintable.g1',
             field = fcal,
@@ -135,17 +137,17 @@ def calibrate_VLA(info):
         applycal(vis = myms,
                 field = target, 
                 gaintable = tables,
-                gainfield = ['', '', pcal],
+                gainfield = len(tables) * [''] + [pcal],
                 calwt = False)
         applycal(vis = myms,
                 field = pcal, 
                 gaintable = tables,
-                gainfield = ['', '', pcal],
+                gainfield = len(tables) * [''] + [pcal],
                 calwt = False)
         applycal(vis = myms,
                 field = fcal, 
                 gaintable = tables,
-                gainfield = ['', '', fcal],
+                gainfield = len(tables) * [''] + [fcal],
                 calwt = False)
     tools.jocelyn_log('Data calibrated')
 
