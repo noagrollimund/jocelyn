@@ -66,6 +66,7 @@ ROBUST = 2
 # Stopping criteria
 NITER = 10000
 NSIGMA = 3
+INTERACTIVE = False
 
 # Mask
 USEMASK = 'auto-multithresh'
