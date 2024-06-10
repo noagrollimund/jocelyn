@@ -69,7 +69,7 @@ def split_ms(master_ms, info):
 def flag_cal_uvrange(myms, fcal, pcal):
     for cal_field in [pcal, fcal]:
         cal_name = cal_field.split('_')[0]
-        UVrange = pd.read_csv('data/calibrators_UVrange/' + cal_name + '.csv', sep = '\t')
+        UVrange = pd.read_csv(cfg.PATH_CODE + 'data/calibrators_UVrange/' + cal_name + '.csv', sep = '\t')
         UVmin = UVrange[UVrange['BAND'] == cfg.BAND]['UVMIN'].iloc[0]
         UVmax = UVrange[UVrange['BAND'] == cfg.BAND]['UVMAX'].iloc[0]
         if not np.isnan(UVmin):

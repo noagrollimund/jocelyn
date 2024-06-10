@@ -33,6 +33,7 @@ BAND_DEFINITIONS = {
 
 #----- Paths ---------------------------------------------#
 PATH_OBS = os.getcwd()
+PATH_CODE = PATH_OBS + '/jocelyn/'
 PATH_BAND = PATH_OBS + '/' + BAND + 'band/'
 PATH_JSON = PATH_BAND + 'info.json'
 PATH_tables = PATH_BAND + 'tables/'

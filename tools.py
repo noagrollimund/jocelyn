@@ -146,7 +146,7 @@ def date_time_to_MJD(year, date, time):
 
 def VLA_corrected_baselines(date_obs, time, working_ants):
     year = date_obs.split('-')[0]
-    source_filename = 'data/baselines_corrections/VLA_baseline_corr_{}.txt'.format(year)
+    source_filename = cfg.PATH_CODE + 'data/baselines_corrections/VLA_baseline_corr_{}.txt'.format(year)
     df = pd.read_fwf(source_filename, skiprows = 2, widths = [7, 10, 8, 8, 5, 4, 8, 8, 8])
     for B in ['Bx', 'By', 'Bz']:
         df[B].apply(float)
