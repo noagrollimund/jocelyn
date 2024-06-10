@@ -112,11 +112,11 @@ def basic_flagging(info):
 
 def manual_flagging(info):
     myms = cfg.PATH_BAND + info['ms']
-    flags_filename = glob.glob(cfg.PATH_OBS + '/*_flags.py')[0]
+    flags_filename = glob.glob(cfg.PATH_OBS + '/*_flags.py')
     if flags_filename == []:
         tools.jocelyn_log('No flagging file found')
     else:
-        exec(open(flags_filename).read(), {'myms': myms})
+        exec(open(flags_filename[0]).read(), {'myms': myms})
         tools.jocelyn_log('Manual flagging completed')
 
 def main(options):
