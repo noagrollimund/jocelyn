@@ -133,6 +133,7 @@ def main(options):
         steps = options.replace(' ', '').split(',')
         if 'i' in steps:
             import_archive(master_ms)
+        if 'g' in steps:
             info = get_info(master_ms)
             split_ms(master_ms, info)
         if 'f' in  steps:
