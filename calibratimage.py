@@ -397,17 +397,30 @@ def export_ms(myms, myms_target, target = ''):
           field = target,
           datacolumn = 'corrected')
 
-def main():
+def main(options):
     os.chdir(cfg.PATH_BAND)
     with open(cfg.PATH_JSON, 'r') as read_file:
         info = json.load(read_file)
     tools.jocelyn_log('Information loaded')
-    if cfg.TELESCOPE == 'VLA':
-        calibrate_VLA(info)
-        deconvolve_VLA(info)
-    elif cfg.TELESCOPE == 'ATCA':
-        calibrate_ATCA(info)
-        selfcal_ATCA(info)
+    if options == '':
+        if cfg.TELESCOPE == 'VLA':
+            calibrate_VLA(info)
+            deconvolve_VLA(info)
+        elif cfg.TELESCOPE == 'ATCA':
+            calibrate_ATCA(info)
+            selfcal_ATCA(info)
+    else:
+        steps = options.replace(' ', '').split(',')
+        if 'c' in steps:
+            if cfg.TELESCOPE == 'VLA':
+                calibrate_VLA(info)
+            elif cfg.TELESCOPE == 'ATCA':
+                calibrate_ATCA(info)
+        if 'd' in steps:
+            if cfg.TELESCOPE == 'VLA':
+                deconvolve_VLA(info)
+            elif cfg.TELESCOPE == 'ATCA':
+                selfcal_ATCA(info)
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1])

@@ -1,4 +1,4 @@
-import glob, json, os
+import glob, json, os, sys
 import numpy as np
 import pandas as pd
 from casatasks import importvla, importatca, listobs, split, flagdata
@@ -16,16 +16,14 @@ def import_archive(master_ms):
         tools.jocelyn_log('Archive imported')
     else:
         tools.jocelyn_log('Master MS found')
+    listobs(master_ms, listfile = master_ms + '.listobs')
 
 def get_info(master_ms):
     spw, freq = tools.get_spw(master_ms, cfg.BAND)
-
     list_obs = listobs(master_ms, spw = spw)
     target, fcal = tools.get_target_fcal(master_ms)
     pcal = tools.get_pcal(list_obs, master_ms)
-
     scans = tools.check_scans(list_obs, master_ms)
-
     MJD, date, time = tools.get_date_time(list_obs, master_ms, target)
     myms = '_'.join([cfg.SOURCE, cfg.TELESCOPE, date, cfg.BAND + 'band.ms'])
 
@@ -121,15 +119,27 @@ def manual_flagging(info):
         exec(open(flags_filename).read(), {'myms': myms})
         tools.jocelyn_log('Manual flagging completed')
 
-def main():
+def main(options):
     master_ms = cfg.PATH_OBS + '/master.ms'
-    import_archive(master_ms)
-    info = get_info(master_ms)
-    split_ms(master_ms, info)
-    if cfg.BASIC_FLAG:
-        basic_flagging(info)
-    if cfg.MANUAL_FLAG:
-        manual_flagging(info)
+    if options == '':
+        import_archive(master_ms)
+        info = get_info(master_ms)
+        split_ms(master_ms, info)
+        if cfg.BASIC_FLAG:
+            basic_flagging(info)
+        if cfg.MANUAL_FLAG:
+            manual_flagging(info)
+    else:
+        steps = options.replace(' ', '').split(',')
+        if 'i' in steps:
+            import_archive(master_ms)
+            info = get_info(master_ms)
+            split_ms(master_ms, info)
+        if 'f' in  steps:
+            if cfg.BASIC_FLAG:
+                basic_flagging(info)
+            if cfg.MANUAL_FLAG:
+                manual_flagging(info)
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1])
