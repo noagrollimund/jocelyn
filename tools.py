@@ -11,6 +11,11 @@ import config as cfg
 def jocelyn_log(message):
     print('--/jocelyn/--: ' + message)
 
+def read_info_json():
+    with open(cfg.PATH_JSON, 'r') as read_file:
+        info = json.load(read_file)
+    return info
+
 def select_keys_with_kwrd(dict, keyword):
     return [key for key in dict.keys() if key[:len(keyword)] == keyword]
 
@@ -203,11 +208,9 @@ def find_best_refant(info, nb_ctr_ant = 6):
     best_antennas = [ant_name for _, ant_name in sorted(zip(flag_percentages, central_antennas))]
     refant = best_antennas[0]
     info['refant'] = refant
-    with open('/'.join([cfg.PATH_BAND, 'info.json']), "w") as write_file:
+    with open(cfg.PATH_JSON, "w") as write_file:
         json.dump(info, write_file)
-    print('----------------------------')
-    print('Best reference antenna found')
-    print('----------------------------')
+    jocelyn_log('Best reference antenna found')
     return refant
 
 def find_best_solint(myms, target, refant):

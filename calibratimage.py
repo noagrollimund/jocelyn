@@ -401,8 +401,7 @@ def export_ms(myms, myms_target, target = ''):
 
 def main(options):
     os.chdir(cfg.PATH_BAND)
-    with open(cfg.PATH_JSON, 'r') as read_file:
-        info = json.load(read_file)
+    info = tools.read_info_json()
     tools.jocelyn_log('Information loaded')
     if options == '':
         if cfg.TELESCOPE == 'VLA':

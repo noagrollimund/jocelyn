@@ -137,6 +137,7 @@ def main(options):
             info = get_info(master_ms)
             split_ms(master_ms, info)
         if 'f' in  steps:
+            info = tools.read_info_json()
             if cfg.BASIC_FLAG:
                 basic_flagging(info)
             if cfg.MANUAL_FLAG:
