@@ -156,7 +156,7 @@ def deconvolve_VLA(info):
     target = info['fields']['target']
     myms_target = myms.replace('.ms', '_target.ms')
     imagename = cfg.PATH_images + '/' + myms.replace('.ms', '')
-    cell_auto, imsize_auto, _ = au.pickCellSize(vis = myms, npix = 5, imsize = True)
+    cell_auto, imsize_auto, _ = au.pickCellSize(vis = myms, npix = 8, imsize = True)
     cell = cell_auto if cfg.CELL == '' else cfg.CELL
     imsize = imsize_auto if cfg.IMSIZE == '' else cfg.IMSIZE
     split(vis = myms,
@@ -365,7 +365,7 @@ def jocelyn_clean(ms = '',
                   fastnoise = False,
                   savemodel = 'modelcolumn',
                   parallel = cfg.PARALLEL):
-    cell_auto, imsize_auto, _ = au.pickCellSize(vis = ms, npix = 5, imsize = True)
+    cell_auto, imsize_auto, _ = au.pickCellSize(vis = ms, npix = 8, imsize = True)
     _cell_ = cell_auto if cell == '' else cell
     _imsize_ = imsize_auto if imsize == '' else imsize
     tclean(vis = ms,
