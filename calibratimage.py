@@ -403,7 +403,7 @@ def export_ms(myms, myms_target, target = ''):
 
 def main(options):
     os.chdir(cfg.PATH_BAND)
-    info = tools.read_info_json()
+    info = tools.info_json()
     tools.jocelyn_log('Information loaded')
     if options == '':
         if cfg.TELESCOPE == 'VLA':
