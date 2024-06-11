@@ -1,4 +1,4 @@
-import glob, json, os, sys
+import glob, os, sys
 import numpy as np
 import pandas as pd
 from casatasks import importvla, importatca, listobs, split, flagdata
@@ -45,8 +45,7 @@ def get_info(master_ms):
     }
     if not os.path.exists(cfg.PATH_BAND):
         os.makedirs(cfg.PATH_BAND)
-    with open(cfg.PATH_JSON, "w") as write_file:
-        json.dump(info, write_file)
+    tools.info_json(mode = 'w', info = info)
     tools.jocelyn_log('Information collected')
     return info
 
@@ -137,7 +136,7 @@ def main(options):
             info = get_info(master_ms)
             split_ms(master_ms, info)
         if 'f' in  steps:
-            info = tools.read_info_json()
+            info = tools.info_json()
             if cfg.BASIC_FLAG:
                 basic_flagging(info)
             if cfg.MANUAL_FLAG:

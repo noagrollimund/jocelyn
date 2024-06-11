@@ -11,10 +11,14 @@ import config as cfg
 def jocelyn_log(message):
     print('--/jocelyn/--: ' + message)
 
-def read_info_json():
-    with open(cfg.PATH_JSON, 'r') as read_file:
-        info = json.load(read_file)
-    return info
+def info_json(mode = 'r', info = {}):
+    with open(cfg.PATH_JSON, mode) as file:
+        if mode == 'r':
+            info = json.load(file)
+            return info
+        if mode == 'w':
+            json.dump(info, file)
+    
 
 def select_keys_with_kwrd(dict, keyword):
     return [key for key in dict.keys() if key[:len(keyword)] == keyword]

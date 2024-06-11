@@ -1,4 +1,4 @@
-import json, os, sys
+import os, sys
 from casatasks import gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, polcal, statwt
 import tools
 import config as cfg
