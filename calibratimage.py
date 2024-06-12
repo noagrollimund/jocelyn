@@ -335,9 +335,6 @@ def selfcal_ATCA(info):
     tools.jocelyn_log('Self-calibration completed')
     myms_target = myms.replace('.ms', '_target.ms')
     export_ms(myms_selfcal, myms_target, target)
-    if cfg.STACK_OBS:
-        statwt(vis = myms_target,
-               datacolumn = 'data')
 
 def jocelyn_clean(ms = '',
                   field = '',
