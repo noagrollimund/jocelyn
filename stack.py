@@ -24,7 +24,7 @@ def selfcal(myms, imagename):
                  gaintable = gaintables)
         jocelyn_clean(ms = myms,
                       imagename = img_name)
-    SCa = cfg.PATH_tables + 'cal.SCa'
+    SCa = 'cal.SCa'
     gaincal(vis = myms,
             caltable = SCa,
             solint = '160s',
