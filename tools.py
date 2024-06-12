@@ -18,7 +18,6 @@ def info_json(mode = 'r', info = {}):
             return info
         if mode == 'w':
             json.dump(info, file)
-    
 
 def select_keys_with_kwrd(dict, keyword):
     return [key for key in dict.keys() if key[:len(keyword)] == keyword]
@@ -125,13 +124,6 @@ def get_date_time(obs, myms, target):
     date = t.iso.split(' ')[0]
     time = t.iso.split(' ')[1]
     return MJD, date, time
-
-def compute_imsize(freq, cell):
-    available_imsizes = [10 * 2**n for n in range(5, 11)]
-    FOV = 60 * 60 / (1e-9 * freq)
-    imsize = FOV / cell / 5
-    imsize = min(available_imsizes, key = lambda x: abs(imsize - x))
-    return imsize
 
 def dist_to_center(x, y, z):
     return np.sqrt(x**2 + y**2 + z**2)
