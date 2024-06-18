@@ -7,9 +7,9 @@ def selfcal(myms, imagename):
     jocelyn_clean(ms = myms,
                   datacolumn = 'data',
                   imagename = imagename + '_init')
-    n_rounds = 3
+    n_rounds_p = 3
     gaintables = []
-    for round in range(n_rounds):
+    for round in range(n_rounds_p):
         SC = 'cal.SC' + str(round + 1)
         img_name = imagename + '_selfcal' + str(round + 1)
         gaincal(vis = myms,
@@ -24,20 +24,25 @@ def selfcal(myms, imagename):
                  gaintable = gaintables)
         jocelyn_clean(ms = myms,
                       imagename = img_name)
-    SCa = 'cal.SCa'
-    gaincal(vis = myms,
-            caltable = SCa,
-            solint = '160s',
-            refant = 'CA04',
-            calmode = 'ap',
-            gaintable = gaintables,
-            solnorm = True,
-            normtype = 'median')
-    gaintables.append(SCa)
-    applycal(vis = myms,
-             gaintable = gaintables)
+    n_rounds_ap = 2
+    for round in range(n_rounds_ap):
+        SC = 'cal.SCap' + str(round + 1)
+        img_name = imagename + '_selfcal_ap' + str(round + 1)
+        gaincal(vis = myms,
+                caltable = SC,
+                solint = '160s',
+                refant = 'CA04',
+                calmode = 'ap',
+                gaintable = gaintables,
+                solnorm = True,
+                normtype = 'median')
+        gaintables.append(SC)
+        applycal(vis = myms,
+                 gaintable = gaintables)
+        jocelyn_clean(ms = myms,
+                      imagename = img_name)
     jocelyn_clean(ms = myms,
-                  imagename = imagename + '_selfcal_ap',
+                  imagename = imagename + '_final',
                   usemask = 'user',
                   savemodel = 'none')
 
