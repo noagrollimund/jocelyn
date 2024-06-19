@@ -84,5 +84,5 @@ PARALLEL = True
 
 #----- Stacking ------------------------------------------#
 STACK_OBS = True
-STACK_WEIGHTS = [2.5, 2.0, 2.8, 2.9, 3.1, 1.0, 3.7, 1.6]
+STACK_WEIGHTS = []
 STACK_SELFCAL = True
