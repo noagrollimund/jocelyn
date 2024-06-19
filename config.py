@@ -35,7 +35,7 @@ BAND_DEFINITIONS = {
 #----- Paths ---------------------------------------------#
 PATH_OBS = os.getcwd()
 PATH_CODE = PATH_OBS + '/jocelyn/'
-PATH_BAND = PATH_OBS + '/' + BAND + 'band/'
+PATH_BAND = PATH_OBS + f'/{BAND}band/'
 PATH_JSON = PATH_BAND + 'info.json'
 PATH_tables = PATH_BAND + 'tables/'
 PATH_images = PATH_BAND + 'images/'
@@ -84,4 +84,5 @@ PARALLEL = True
 
 #----- Stacking ------------------------------------------#
 STACK_OBS = True
+STACK_WEIGHTS = [2.5, 2.0, 2.8, 2.9, 3.1, 1.0, 3.7, 1.6]
 STACK_SELFCAL = True

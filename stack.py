@@ -48,10 +48,12 @@ def selfcal(myms, imagename):
 
 def main(path_stack):
     os.chdir(path_stack)
-    list_of_target_ms = glob.glob('../*/{}band/*_target.ms'.format(cfg.BAND))
+    list_of_target_ms = glob.glob(f'../*/{cfg.BAND}band/*_target.ms')
+    list_of_target_ms.sort()
     myms = '_'.join([cfg.SOURCE, cfg.TELESCOPE, cfg.BAND + 'band.ms'])
     concat(vis = list_of_target_ms,
-           concatvis = myms)
+           concatvis = myms,
+           visweightscale = cfg.STACK_WEIGHTS)
     imagename = myms.replace('.ms', '')
     if cfg.STACK_SELFCAL:
         selfcal(myms, imagename)
