@@ -13,7 +13,7 @@ def import_archive(master_ms):
         elif cfg.TELESCOPE == 'ATCA':
             archive_filename = glob.glob(cfg.PATH_OBS + '/*.C*')
             importatca(vis = master_ms, files = archive_filename, options = 'birdie, noac')
-        tools.jocelyn_log('Archive imported')
+        tools.jocelyn_log(f'{cfg.TELESCOPE} archive imported')
     else:
         tools.jocelyn_log('Master MS found')
     listobs(master_ms, listfile = master_ms + '.listobs')
@@ -68,7 +68,7 @@ def split_ms(master_ms, info):
 def flag_cal_uvrange(myms, fcal, pcal):
     for cal_field in [pcal, fcal]:
         cal_name = cal_field.split('_')[0]
-        UVrange = pd.read_csv(cfg.PATH_CODE + 'data/calibrators_UVrange/' + cal_name + '.csv', sep = '\t')
+        UVrange = pd.read_csv(cfg.PATH_CODE + f'data/calibrators_UVrange/{cal_name}.csv', sep = '\t')
         UVmin = UVrange[UVrange['BAND'] == cfg.BAND]['UVMIN'].iloc[0]
         UVmax = UVrange[UVrange['BAND'] == cfg.BAND]['UVMAX'].iloc[0]
         if not np.isnan(UVmin):
@@ -76,7 +76,7 @@ def flag_cal_uvrange(myms, fcal, pcal):
                 flagdata(vis = myms,
                          mode = 'manual',
                          field = cal_name,
-                         uvrange = '<{}klambda'.format(int(UVmin)))
+                         uvrange = f'<{int(UVmin)}klambda')
             except:
                 pass
         if not np.isnan(UVmax):
@@ -84,7 +84,7 @@ def flag_cal_uvrange(myms, fcal, pcal):
                 flagdata(vis = myms,
                          mode = 'manual',
                          field = cal_name,
-                         uvrange = '>{}klambda'.format(int(UVmax)))
+                         uvrange = f'>{int(UVmax)}klambda')
             except:
                 pass
 

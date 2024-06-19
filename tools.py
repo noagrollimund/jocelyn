@@ -142,7 +142,7 @@ def date_time_to_MJD(year, date, time):
 
 def VLA_corrected_baselines(date_obs, time, working_ants):
     year = date_obs.split('-')[0]
-    source_filename = cfg.PATH_CODE + 'data/baselines_corrections/VLA_baseline_corr_{}.txt'.format(year)
+    source_filename = cfg.PATH_CODE + f'data/baselines_corrections/VLA_baseline_corr_{year}.txt'
     df = pd.read_fwf(source_filename, skiprows = 2, widths = [7, 10, 8, 8, 5, 4, 8, 8, 8])
     for B in ['Bx', 'By', 'Bz']:
         df[B].apply(float)
@@ -228,5 +228,5 @@ def find_best_solint(myms, target, refant):
         ax.hist(snr, bins = 50, density = True, histtype = 'step', label = solint)
         ax.set_xlabel('SNR')
         ax.legend(loc = 'upper right')
-        print('P(<=3) = {0} ({1})'.format(stats.percentileofscore(snr, 3), solint))
+        print(f'P(<=3) = {stats.percentileofscore(snr, 3)} ({solint})')
     plt.savefig('SNR_gaincal_SC_vs_solint.png')

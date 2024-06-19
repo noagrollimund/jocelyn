@@ -11,7 +11,7 @@ def main():
     if not os.path.exists(path_data):
         raise FileNotFoundError('No data directory found.')
     for date in cfg.DATES:
-        path_obs = path + '/' + date[0] + '/'
+        path_obs = f'{path}/{date[0]}/'
         if not os.path.exists(path_obs):
             os.makedirs(path_obs)
         gen.symlinks(path_data, date)
