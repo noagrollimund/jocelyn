@@ -416,7 +416,7 @@ def main(options):
                 calibrate_VLA(info)
             elif cfg.TELESCOPE == 'ATCA':
                 calibrate_ATCA(info)
-        if 'd' in steps:
+        if 'i' in steps:
             if cfg.TELESCOPE == 'VLA':
                 deconvolve_VLA(info)
             elif cfg.TELESCOPE == 'ATCA':
