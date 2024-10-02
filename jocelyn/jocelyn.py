@@ -6,10 +6,10 @@ def main(path_obs):
     os.chdir(path_obs)
 
     import look
-    look.main()
+    look.main('')
 
     import calibratimage
-    calibratimage.main()
+    calibratimage.main('')
 
 if __name__ == "__main__":
     options = sys.argv[1] if len(sys.argv) > 1 else ''
