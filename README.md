@@ -17,7 +17,7 @@ You will need a modular version of CASA 6: https://casadocs.readthedocs.io/en/st
 3. Make a symlink to your MS or archive file (or place it in the working directory):
 
     ```
-    $ ln -s /path/to/archive/H1743.exp .
+    $ ln -s /path/to/archive/VLA.exp .
     ```
 
 4. (Optional) Add your CASA-friendly flag file of the format `*.flag` in the working directory.
@@ -30,8 +30,24 @@ You will need a modular version of CASA 6: https://casadocs.readthedocs.io/en/st
     $ python jocelyn/look.py
     ```
 
-If you want to run only some of the steps, you can specify them as arguments:
+6. The second step is to run a script that will perform calibration (c) and imaging (i) of your data.
+
+    ```
+    $ python jocelyn/calibratimage.py
+    ```
+
+Notes: 
+
+* If you want to run only some of the steps, you can specify them as arguments:
 
     ```
     $ python jocelyn/look.py i,g,f
+    ...
+    $ python jocelyn/calibratimage.py c,i
+    ```
+
+* If you want to run the whole pipeline without stopping between `look.py` and `calibratimage.py`:
+
+    ```
+    $ python jocelyn/jocelyn.py
     ```
