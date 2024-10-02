@@ -46,7 +46,7 @@ Notes:
     $ python jocelyn/calibratimage.py c,i
     ```
 
-* If you want to run the whole pipeline without stopping between `look.py` and `calibratimage.py`:
+* If you want to run the whole pipeline without stopping between [`look.py`](look.py) and [`calibratimage.py`](calibratimage.py):
 
     ```
     $ python jocelyn/jocelyn.py
