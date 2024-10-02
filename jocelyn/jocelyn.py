@@ -3,10 +3,10 @@ import sys, os
 def main(path_obs):
     os.chdir(path_obs)
 
-    import look
+    from jocelyn.jocelyn import look
     look.main()
 
-    import calibratimage
+    from jocelyn.jocelyn import calibratimage
     calibratimage.main()
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from casatasks import importvla, importatca, listobs, split, flagdata
 import config as cfg
-import tools
+import tools as tools
 
 def import_archive(master_ms):
     if not os.path.exists(master_ms):

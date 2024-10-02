@@ -1,6 +1,6 @@
 import os
-import config as cfg
-import generate_jobs as gen
+import jocelyn.config as cfg
+import jocelyn.generate_jobs as gen
 
 def main():
     path = os.getcwd()

@@ -1,6 +1,6 @@
 import os, sys
 from casatasks import gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, polcal, statwt
-import tools
+import tools as tools
 import config as cfg
 sys.path.append(os.path.expanduser('~') + '/analysis_scripts/')
 import analysisUtils as au
