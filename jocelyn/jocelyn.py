@@ -5,10 +5,10 @@ def main(path_obs):
         path_obs = os.getcwd()
     os.chdir(path_obs)
 
-    from jocelyn.jocelyn import look
+    from jocelyn import look
     look.main()
 
-    from jocelyn.jocelyn import calibratimage
+    from jocelyn import calibratimage
     calibratimage.main()
 
 if __name__ == "__main__":
