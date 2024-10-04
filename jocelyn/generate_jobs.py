@@ -1,4 +1,10 @@
 import os
+import jocelyn.config as cfg
+
+def write_slurm(slurm_file, instruct):
+    with open(slurm_file, "w") as f:
+        f.write(instruct)
+    os.system('chmod +x ' + slurm_file)
 
 def slurm_jocelyn(path_obs, path_code):
     instruct = "#!/bin/bash\n"
@@ -11,12 +17,10 @@ def slurm_jocelyn(path_obs, path_code):
     instruct += "#SBATCH --mem=64GB\n"
     instruct += f"#SBATCH --output={path_obs}jocelyn.log\n"
     instruct += "module load openmpi/4.0.3\n"
-    instruct += f"mpirun singularity exec /idia/software/containers/casa-6.simg python {path_code}jocelyn.py {path_obs}\n"
+    instruct += f"mpirun singularity exec {cfg.CASA_CONTAINER_PATH} python {path_code}jocelyn.py {path_obs}\n"
     instruct += 'echo "****ELAPSED "$SECONDS""\n'
     slurm_file = f'{path_obs}jocelyn.sh'
-    with open(slurm_file, "w") as f:
-        f.write(instruct)
-    os.system('chmod +x ' + slurm_file)
+    write_slurm(slurm_file, instruct)
 
 def slurm_stack(path_stack, path_code):
     instruct = "#!/bin/bash\n"
@@ -29,16 +33,12 @@ def slurm_stack(path_stack, path_code):
     instruct += "#SBATCH --mem=64GB\n"
     instruct += f"#SBATCH --output={path_stack}stack.log\n"
     instruct += "module load openmpi/4.0.3\n"
-    instruct += f"mpirun singularity exec /idia/software/containers/casa-6.simg python {path_code}stack.py {path_stack}\n"
+    instruct += f"mpirun singularity exec {cfg.CASA_CONTAINER_PATH} python {path_code}stack.py {path_stack}\n"
     instruct += 'echo "****ELAPSED "$SECONDS""\n'
     slurm_file = f'{path_stack}stack.sh'
-    with open(slurm_file, "w") as f:
-        f.write(instruct)
-    os.system('chmod +x ' + slurm_file)
+    write_slurm(slurm_file, instruct)
 
 def slurm_main(path, paths_obs, path_stack):
-    slurm_file = path + '/submit_jobs.sh'
-    kill_file = path + "/kill_jobs.sh"
     instruct = "#!/bin/bash\n"
     for i, path_obs in enumerate(paths_obs):
         instruct += f"jcl{i}=`sbatch {path_obs}jocelyn.sh" + " | awk '{print $4}'`\n"
@@ -48,7 +48,7 @@ def slurm_main(path, paths_obs, path_stack):
         instruct += f"stack=`sbatch --dependency=afterok{afterok} {path_stack}stack.sh" + " | awk '{print $4}'`\n"
         list_of_jobs.append('stack')
     scancel_jobs = ' '.join(['$' + name for name in list_of_jobs])
+    slurm_file = path + '/submit_jobs.sh'
+    kill_file = path + "/kill_jobs.sh"
     instruct += f"echo 'scancel '{scancel_jobs} > {kill_file}"
-    with open(slurm_file, "w") as f:
-        f.write(instruct)
-    os.system('chmod +x ' + slurm_file)
+    write_slurm(slurm_file, instruct)
