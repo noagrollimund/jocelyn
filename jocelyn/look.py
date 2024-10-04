@@ -110,7 +110,7 @@ def basic_flagging(info):
     tools.jocelyn_log('Basic flagging completed')
 
 def manual_flagging(info):
-    flags_filename = glob.glob(cfg.PATH_OBS + '/*flag*')
+    flags_filename = glob.glob(cfg.PATH_OBS + '/*.flag')
     if flags_filename == []:
         tools.jocelyn_log('No flagging file found')
     else:

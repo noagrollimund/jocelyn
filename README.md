@@ -2,7 +2,7 @@
 
 ## What is this?
 
-A set of `Python` scripts to automatize basic data reduction of radio-interferometry observations. For now, the available arrays are the VLA and the ATCA. Jocelyn performs flagging, calibration and imaging (including self-calibration) within CASA.
+A set of `Python` scripts to automatize basic data reduction of radio-interferometric observations. For now, the available arrays are the VLA and the ATCA. Jocelyn performs flagging, calibration and imaging (including self-calibration) within CASA.
 
 ## Prerequisites
 
