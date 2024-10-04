@@ -1,15 +1,4 @@
-import os, glob
-
-def symlinks(path_data, date):
-    obs_dir = date[0]
-    for prefix in date:
-        archives = glob.glob(path_data + prefix + '*.C*')
-        for archive in archives:
-            link_archive = archive + ' ' + obs_dir
-            os.system('ln -s ' + link_archive)
-    flags_file = glob.glob(path_data + obs_dir + '*flags*.py')
-    link_flags = flags_file[0] + ' ' + obs_dir
-    os.system('ln -s ' + link_flags)
+import os
 
 def slurm_jocelyn(path_obs, path_code):
     instruct = "#!/bin/bash\n"
