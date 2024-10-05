@@ -44,6 +44,7 @@ def selfcal(myms, imagename):
     jocelyn_clean(ms = myms,
                   imagename = imagename + '_final',
                   usemask = 'user',
+                  pbmask = 0.2,
                   savemodel = 'none')
 
 def main(path_stack):

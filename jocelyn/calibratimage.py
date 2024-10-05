@@ -1,5 +1,5 @@
 import os, sys
-from casatasks import gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, polcal, statwt
+from casatasks import gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, polcal
 import tools as tools
 import config as cfg
 sys.path.append(os.path.expanduser('~') + '/analysis_scripts/')
@@ -27,9 +27,10 @@ def calibrate_VLA(info):
     #        antenna = antennas,
     #        parameter = antpos_corr)
 
-    # Opacity corrections
+
     high_frequencies = cfg.BAND in ['Ku', 'K', 'Q']
     if high_frequencies:
+        # Opacity corrections
         tau = plotweather(vis = myms, doPlot = False)
         gencal(vis = myms,
                caltable = cfg.PATH_tables + 'opacity.cal',
