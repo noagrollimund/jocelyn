@@ -1,9 +1,23 @@
-import os, sys
-from casatasks import gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, polcal
+import os, sys, glob
+from casatasks import flagdata, gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, polcal
 import tools as tools
 import config as cfg
 sys.path.append(os.path.expanduser('~') + '/analysis_scripts/')
 import analysisUtils as au
+
+def manual_flagging(info: dict):
+    """
+    Flag data from commands given in an input .flag file.
+    """
+    # Check if a flagging file is available
+    flags_filename = glob.glob(cfg.PATH_OBS + '/*.flag')
+    if flags_filename == []:
+        tools.jocelyn_log('No flagging file found')
+    else:
+        # Apply the external flags
+        myms = cfg.PATH_BAND + info['ms']
+        flagdata(vis = myms, mode = 'list', inpfile = flags_filename[0])
+        tools.jocelyn_log('Manual flagging completed')
 
 def calibrate_VLA(info):
     target = info['fields']['target']
@@ -417,6 +431,8 @@ def main(options):
     info = tools.info_json()
     tools.jocelyn_log('Information loaded')
     if options == '':
+        if cfg.MANUAL_FLAG:
+            manual_flagging(info)
         if cfg.TELESCOPE == 'VLA':
             calibrate_VLA(info)
             deconvolve_VLA(info)
@@ -425,6 +441,8 @@ def main(options):
             selfcal_ATCA(info)
     else:
         steps = options.replace(' ', '').split(',')
+        if 'f' in steps and cfg.MANUAL_FLAG:
+            manual_flagging(info)
         if 'c' in steps:
             if cfg.TELESCOPE == 'VLA':
                 calibrate_VLA(info)

@@ -127,20 +127,6 @@ def basic_flagging(info: dict):
         flag_cal_uvrange(myms, fcal, pcal)
     tools.jocelyn_log('Basic flagging completed')
 
-def manual_flagging(info: dict):
-    """
-    Flag data from commands given in an input .flag file.
-    """
-    # Check if a flagging file is available
-    flags_filename = glob.glob(cfg.PATH_OBS + '/*.flag')
-    if flags_filename == []:
-        tools.jocelyn_log('No flagging file found')
-    else:
-        # Apply the external flags
-        myms = cfg.PATH_BAND + info['ms']
-        flagdata(vis = myms, mode = 'list', inpfile = flags_filename[0])
-        tools.jocelyn_log('Manual flagging completed')
-
 def main(options: str):
     """
     Run the first steps of the pipeline: import the archive data (i), gather some information
@@ -153,8 +139,6 @@ def main(options: str):
         split_ms(master_ms, info)
         if cfg.BASIC_FLAG:
             basic_flagging(info)
-        if cfg.MANUAL_FLAG:
-            manual_flagging(info)
     else:
         steps = options.replace(' ', '').split(',') # Selection of step(s)
         if 'i' in steps:
@@ -166,8 +150,6 @@ def main(options: str):
             info = tools.info_json()
             if cfg.BASIC_FLAG:
                 basic_flagging(info)
-            if cfg.MANUAL_FLAG:
-                manual_flagging(info)
 
 if __name__ == "__main__":
     options = sys.argv[1] if len(sys.argv) > 1 else ''
