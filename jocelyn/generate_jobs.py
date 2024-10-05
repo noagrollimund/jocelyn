@@ -20,6 +20,7 @@ def slurm_jocelyn(path_obs, path_code):
     instruct += "module load openmpi/4.0.3\n"
     instruct += f"singularity exec {cfg.CASA_CONTAINER_PATH} python {path_code}0_INFO.py\n"
     instruct += f"mpirun singularity exec {cfg.CASA_CONTAINER_PATH} python {path_code}1GC.py\n"
+    instruct += f"mpirun singularity exec {cfg.CASA_CONTAINER_PATH} python {path_code}2GC.py\n"
     instruct += 'echo "****ELAPSED "$SECONDS""\n'
     slurm_file = f'{path_obs}JOCELYN.sh'
     write_slurm(slurm_file, instruct)

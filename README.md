@@ -34,10 +34,16 @@ You will need a modular version of CASA 6: https://casadocs.readthedocs.io/en/st
     python jocelyn/0_INFO.py
     ```
 
-6. The second step is to run a script that will perform manual flagging (f), calibration (c) and imaging (i) of your data.
+6. The second step is to run a script that will perform manual flagging (f), calibration (c) and imaging (i) of your data:
 
     ```
     python jocelyn/1GC.py
+    ```
+
+7. The third step self-calibrates the data (several rounds of phase-only selfcal, then phase and amplitude selfcal):
+
+    ```
+    python jocelyn/2GC.py
     ```
 
 Notes: 
@@ -48,4 +54,6 @@ Notes:
     python jocelyn/0_INFO.py i,g,f
     ...
     python jocelyn/1GC.py c,i
+    ...
+    python jocelyn/2GC.py
     ```
