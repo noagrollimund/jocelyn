@@ -163,7 +163,7 @@ def calibrate_VLA(info):
                 calwt = False)
     tools.jocelyn_log('Data calibrated')
 
-def deconvolve_VLA(info):
+def image_VLA(info):
     myms = info['ms']
     target = info['fields']['target']
     myms_target = myms.replace('.ms', '_target.ms')
@@ -173,8 +173,8 @@ def deconvolve_VLA(info):
           field = target,
           datacolumn = 'corrected')
     tools.jclean(ms = myms_target,
-                  datacolumn = 'data',
-                  imagename = imagename)
+                 datacolumn = 'data',
+                 imagename = imagename)
     tools.jocelyn_log('Image deconvolved')
 
 def calibrate_ATCA(info):
@@ -277,48 +277,47 @@ def calibrate_ATCA(info):
              gainfield = ['', '', '', pcal],
              interp = ['', '', '', 'linear'],
              parang = True)
+    myms_target = myms.replace('.ms', '_target.ms')
+    export_ms(myms, myms_target, target)
     tools.jocelyn_log('Data calibrated')
+
+def image_ATCA(info):
+    myms = info['ms']
+    myms_target = myms.replace('.ms', '_target.ms')
+    imagename = cfg.PATH_images + '/' + myms.replace('.ms', '')
+    tools.jclean(ms = myms_target,
+                 datacolumn = 'data',
+                 imagename = imagename,
+                 nsigma = 10.0)
 
 def selfcal_ATCA(info):
     myms = info['ms']
-    target = info['fields']['target']
-    myms_selfcal = myms.replace('.ms', '_selfcal.ms')
-    export_ms(myms, myms_selfcal)
+    myms_target = myms.replace('.ms', '_target.ms')
     refant = info['refant']
+    nsigmas = [7.0, 5.0, 4.0, 3.0]
 
-    imagename = cfg.PATH_images + '/' + myms.replace('.ms', '_init')
-    nsigmas = [10.0, 7.0, 5.0, 4.0, 3.0]
-    tools.jclean(ms = myms_selfcal,
-                  field = target,
-                  datacolumn = 'data',
-                  imagename = imagename,
-                  nsigma = nsigmas[0])
     # Phase selfcal
     gaintables = []
     for i in range(4):
         SC = cfg.PATH_tables + 'cal.SC' + str(i + 1)
-        gaincal(vis = myms_selfcal,
+        gaincal(vis = myms_target,
                 caltable = SC,
-                field = target,
                 solint = '80s',
                 refant = refant,
                 calmode = 'p',
                 gaintype = 'T',
                 gaintable = gaintables)
         gaintables.append(SC)
-        applycal(vis = myms_selfcal,
-                 field = target,
+        applycal(vis = myms_target,
                  gaintable = gaintables)
-        imagename = cfg.PATH_images + '/' + myms_selfcal.replace('.ms', str(i + 1))
-        tools.jclean(ms = myms_selfcal,
-                      field = target,
-                      imagename = imagename,
-                      nsigma = nsigmas[i + 1])
+        imagename = cfg.PATH_images + '/' + myms.replace('.ms', '_selfcal' + str(i + 1))
+        tools.jclean(ms = myms_target,
+                     imagename = imagename,
+                     nsigma = nsigmas[i])
     # Amplitude selfcal
     SCa = cfg.PATH_tables + 'cal.SCa'
-    gaincal(vis = myms_selfcal,
+    gaincal(vis = myms_target,
             caltable = SCa,
-            field = target,
             solint = '160s',
             refant = refant,
             calmode = 'ap',
@@ -326,17 +325,13 @@ def selfcal_ATCA(info):
             solnorm = True,
             normtype = 'median')
     gaintables.append(SCa)
-    applycal(vis = myms_selfcal,
-                field = target,
-                gaintable = gaintables)
-    imagename = cfg.PATH_images + '/' + myms_selfcal.replace('.ms', '_amp')
-    tools.jclean(ms = myms_selfcal,
-                  field = target,
-                  imagename = imagename,
-                  nsigma = nsigmas[-1])
+    applycal(vis = myms_target,
+            gaintable = gaintables)
+    imagename = cfg.PATH_images + '/' + myms.replace('.ms', '_selfcal_ap')
+    tools.jclean(ms = myms_target,
+                 imagename = imagename,
+                 nsigma = nsigmas[-1])
     tools.jocelyn_log('Self-calibration completed')
-    myms_target = myms.replace('.ms', '_target.ms')
-    export_ms(myms_selfcal, myms_target, target)
 
 def export_ms(myms, myms_target, target = ''):
     split(vis = myms,
@@ -353,9 +348,10 @@ def main(options):
             manual_flagging(info)
         if cfg.TELESCOPE == 'VLA':
             calibrate_VLA(info)
-            deconvolve_VLA(info)
+            image_VLA(info)
         elif cfg.TELESCOPE == 'ATCA':
             calibrate_ATCA(info)
+            image_ATCA(info)
             selfcal_ATCA(info)
     else:
         steps = options.replace(' ', '').split(',')
@@ -368,8 +364,9 @@ def main(options):
                 calibrate_ATCA(info)
         if 'i' in steps:
             if cfg.TELESCOPE == 'VLA':
-                deconvolve_VLA(info)
+                image_VLA(info)
             elif cfg.TELESCOPE == 'ATCA':
+                image_ATCA(info)
                 selfcal_ATCA(info)
 
 if __name__ == "__main__":

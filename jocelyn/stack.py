@@ -1,4 +1,4 @@
-import glob, sys, os
+import glob
 from casatasks import concat, gaincal, applycal
 import tools
 import config as cfg
@@ -42,10 +42,10 @@ def selfcal(myms, imagename):
         tools.jclean(ms = myms,
                       imagename = img_name)
     tools.jclean(ms = myms,
-                  imagename = imagename + '_final',
-                  usemask = 'user',
-                  pbmask = 0.2,
-                  savemodel = 'none')
+                 imagename = imagename + '_final',
+                 usemask = 'user',
+                 pbmask = 0.2,
+                 savemodel = 'none')
 
 def main():
     list_of_target_ms = glob.glob(f'../*/{cfg.BAND}band/*_target.ms')
@@ -59,10 +59,10 @@ def main():
         selfcal(myms, imagename)
     else:
         tools.jclean(ms = myms,
-                      datacolumn = 'data',
-                      imagename = imagename,
-                      usemask = 'user',
-                      savemodel = 'none')
+                     datacolumn = 'data',
+                     imagename = imagename,
+                     usemask = 'user',
+                     savemodel = 'none')
 
 if __name__ == "__main__":
     main()
