@@ -5,7 +5,10 @@ from casatasks import importvla, importatca, listobs, split, flagdata
 import config as cfg
 import tools as tools
 
-def import_archive(master_ms):
+def import_archive(master_ms: str):
+    """
+    Find an input archive file and convert it to a Measurement Set (MS).
+    """
     if not os.path.exists(master_ms):
         if cfg.TELESCOPE == 'VLA':
             archive_filename = glob.glob(cfg.PATH_OBS + '/*.exp')
@@ -18,7 +21,10 @@ def import_archive(master_ms):
         tools.jocelyn_log('Master MS found')
     listobs(master_ms, listfile = master_ms + '.listobs')
 
-def get_info(master_ms):
+def get_info(master_ms: str) -> dict:
+    """
+    Collect information about the main MS.
+    """
     spw, freq = tools.get_spw(master_ms, cfg.BAND)
     list_obs = listobs(master_ms, spw = spw)
     target, fcal = tools.get_target_fcal(master_ms)
@@ -27,6 +33,7 @@ def get_info(master_ms):
     MJD, date, time = tools.get_date_time(list_obs, master_ms, target)
     myms = '_'.join([cfg.SOURCE, cfg.TELESCOPE, date, cfg.BAND + 'band.ms'])
 
+    # Save the gathered information into a JSON file.
     info = {
         "ms":myms,
         "spw":spw,
@@ -49,7 +56,10 @@ def get_info(master_ms):
     tools.jocelyn_log('Information collected')
     return info
 
-def split_ms(master_ms, info):
+def split_ms(master_ms: str, info: dict):
+    """
+    Create a new MS with the fields and spectral windows of interest.
+    """
     myms = cfg.PATH_BAND + info['ms']
     spw = info['spw']
     target = info['fields']['target']
@@ -65,12 +75,17 @@ def split_ms(master_ms, info):
     listobs(myms, listfile = cfg.PATH_BAND + 'list.obs')
     tools.jocelyn_log('MS splitted')
 
-def flag_cal_uvrange(myms, fcal, pcal):
+def flag_cal_uvrange(myms: str, fcal: str, pcal: str):
+    """
+    Perform flagging of the calibrators based on the recommended UV range at a given frequency.
+    """
     for cal_field in [pcal, fcal]:
         cal_name = cal_field.split('_')[0]
+        # Load the recommanded UV range
         UVrange = pd.read_csv(cfg.PATH_CODE + f'data/calibrators_UVrange/{cal_name}.csv', sep = '\t')
         UVmin = UVrange[UVrange['BAND'] == cfg.BAND]['UVMIN'].iloc[0]
         UVmax = UVrange[UVrange['BAND'] == cfg.BAND]['UVMAX'].iloc[0]
+        # Flag calibrators outside the UV range
         if not np.isnan(UVmin):
             try:
                 flagdata(vis = myms,
@@ -88,7 +103,10 @@ def flag_cal_uvrange(myms, fcal, pcal):
             except:
                 pass
 
-def basic_flagging(info):
+def basic_flagging(info: dict):
+    """
+    Deterministic flagging (quack, clip, shadowing, UV range).
+    """
     myms = cfg.PATH_BAND + info['ms']
     fcal = info['fields']['fcal']
     pcal = info['fields']['pcal']
@@ -109,18 +127,27 @@ def basic_flagging(info):
         flag_cal_uvrange(myms, fcal, pcal)
     tools.jocelyn_log('Basic flagging completed')
 
-def manual_flagging(info):
+def manual_flagging(info: dict):
+    """
+    Flag data from commands given in an input .flag file.
+    """
+    # Check if a flagging file is available
     flags_filename = glob.glob(cfg.PATH_OBS + '/*.flag')
     if flags_filename == []:
         tools.jocelyn_log('No flagging file found')
     else:
+        # Apply the external flags
         myms = cfg.PATH_BAND + info['ms']
         flagdata(vis = myms, mode = 'list', inpfile = flags_filename[0])
         tools.jocelyn_log('Manual flagging completed')
 
-def main(options):
+def main(options: str):
+    """
+    Run the first steps of the pipeline: import the archive data (i), gather some information
+    about the observation (g) and apply basic and manual flagging (f).
+    """
     master_ms = cfg.PATH_OBS + '/master.ms'
-    if options == '':
+    if options == '': # All the steps
         import_archive(master_ms)
         info = get_info(master_ms)
         split_ms(master_ms, info)
@@ -129,7 +156,7 @@ def main(options):
         if cfg.MANUAL_FLAG:
             manual_flagging(info)
     else:
-        steps = options.replace(' ', '').split(',')
+        steps = options.replace(' ', '').split(',') # Selection of step(s)
         if 'i' in steps:
             import_archive(master_ms)
         if 'g' in steps:
