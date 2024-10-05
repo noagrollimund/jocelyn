@@ -1,12 +1,14 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import json
+import json, sys, os
 from scipy import stats
 from astropy.time import Time
-from casatasks import flagdata, gaincal
+from casatasks import flagdata, gaincal, tclean
 from casatools import table, msmetadata
 import config as cfg
+sys.path.append(os.path.expanduser('~') + '/analysis_scripts/')
+import analysisUtils as au
 
 def jocelyn_log(message):
     print('--/jocelyn/--: ' + message)
@@ -230,3 +232,59 @@ def find_best_solint(myms, target, refant):
         ax.legend(loc = 'upper right')
         print(f'P(<=3) = {stats.percentileofscore(snr, 3)} ({solint})')
     plt.savefig('SNR_gaincal_SC_vs_solint.png')
+
+def jclean(ms = '',
+           field = '',
+           datacolumn = 'corrected',
+           imagename = '',
+           imsize = cfg.IMSIZE,
+           cell = cfg.CELL,
+           gridder = cfg.GRIDDER,
+           wprojplanes = cfg.WPROJPLANES,
+           pblimit = cfg.PBLIMIT,
+           deconvolver = cfg.DECONVOLVER,
+           scales = cfg.SCALES,
+           nterms = cfg.NTERMS,
+           weighting = cfg.WEIGHTING,
+           robust = cfg.ROBUST,
+           niter = cfg.NITER,
+           nsigma = cfg.NSIGMA,
+           interactive = cfg.INTERACTIVE,
+           usemask = cfg.USEMASK,
+           pbmask = cfg.PBMASK,
+           sidelobethreshold = cfg.SIDELOBETHRESHOLD,
+           noisethreshold = cfg.NOISETHRESHOLD,
+           lownoisethreshold = cfg.LOWNOISETHRESHOLD,
+           minbeamfrac = cfg.MINBEAMFRAC,
+           fastnoise = False,
+           savemodel = 'modelcolumn',
+           parallel = cfg.PARALLEL):
+    cell_auto, imsize_auto, _ = au.pickCellSize(vis = ms, npix = 8, imsize = True)
+    _cell_ = cell_auto if cell == '' else cell
+    _imsize_ = imsize_auto if imsize == '' else imsize
+    tclean(vis = ms,
+           field = field,
+           datacolumn = datacolumn,
+           imagename = imagename,
+           imsize = _imsize_,
+           cell = _cell_,
+           gridder = gridder,
+           wprojplanes = wprojplanes,
+           pblimit = pblimit,
+           deconvolver = deconvolver,
+           scales = scales,
+           nterms = nterms,
+           weighting = weighting,
+           robust = robust,
+           niter = niter,
+           nsigma = nsigma,
+           interactive = interactive,
+           usemask = usemask,
+           pbmask = pbmask,
+           sidelobethreshold = sidelobethreshold,
+           noisethreshold = noisethreshold,
+           lownoisethreshold = lownoisethreshold,
+           minbeamfrac = minbeamfrac,
+           fastnoise = fastnoise,
+           savemodel = savemodel,
+           parallel = parallel)

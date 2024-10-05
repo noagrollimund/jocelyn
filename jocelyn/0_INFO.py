@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from casatasks import importvla, importatca, listobs, split, flagdata
 import config as cfg
-import tools as tools
+import tools
 
 def import_archive(master_ms: str):
     """
@@ -130,7 +130,7 @@ def basic_flagging(info: dict):
 def main(options: str):
     """
     Run the first steps of the pipeline: import the archive data (i), gather some information
-    about the observation (g) and apply basic and manual flagging (f).
+    about the observation (g) and apply basic flagging (f).
     """
     master_ms = cfg.PATH_OBS + '/master.ms'
     if options == '': # All the steps

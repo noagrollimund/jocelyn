@@ -28,16 +28,16 @@ You will need a modular version of CASA 6: https://casadocs.readthedocs.io/en/st
 
 4. Edit [`config.py`](config.py) to set your favorite parameters.
 
-5. The first step of the pipeline is to run a script that imports the archive (i), gathers some information about the observation (g) and applies basic and manual flagging (f):
+5. The first step of the pipeline is to run a script that imports the archive (i), gathers some information about the observation (g) and applies basic (f):
 
     ```
-    python jocelyn/look.py
+    python jocelyn/0_INFO.py
     ```
 
-6. The second step is to run a script that will perform calibration (c) and imaging (i) of your data.
+6. The second step is to run a script that will perform manual flagging (f), calibration (c) and imaging (i) of your data.
 
     ```
-    python jocelyn/calibratimage.py
+    python jocelyn/1GC.py
     ```
 
 Notes: 
@@ -45,13 +45,7 @@ Notes:
 * If you want to run only some of the steps, you can specify them as arguments:
 
     ```
-    python jocelyn/look.py i,g,f
+    python jocelyn/0_INFO.py i,g,f
     ...
-    python jocelyn/calibratimage.py c,i
-    ```
-
-* If you want to run the whole pipeline without stopping between [`look.py`](look.py) and [`calibratimage.py`](calibratimage.py):
-
-    ```
-    python jocelyn/jocelyn.py
+    python jocelyn/1GC.py c,i
     ```

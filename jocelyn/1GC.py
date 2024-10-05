@@ -1,9 +1,7 @@
 import os, sys, glob
-from casatasks import flagdata, gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, tclean, delmod, clearcal, polcal
-import tools as tools
+from casatasks import flagdata, gencal, plotweather, setjy, gaincal, bandpass, fluxscale, applycal, split, delmod, clearcal, polcal
+import tools
 import config as cfg
-sys.path.append(os.path.expanduser('~') + '/analysis_scripts/')
-import analysisUtils as au
 
 def manual_flagging(info: dict):
     """
@@ -15,16 +13,15 @@ def manual_flagging(info: dict):
         tools.jocelyn_log('No flagging file found')
     else:
         # Apply the external flags
-        myms = cfg.PATH_BAND + info['ms']
-        flagdata(vis = myms, mode = 'list', inpfile = flags_filename[0])
+        flagdata(vis = info['ms'], mode = 'list', inpfile = flags_filename[0])
         tools.jocelyn_log('Manual flagging completed')
 
 def calibrate_VLA(info):
     target = info['fields']['target']
     fcal = info['fields']['fcal']
     pcal = info['fields']['pcal']
-    date = info['datetime']['date']
-    time = info['datetime']['time']
+    # date = info['datetime']['date']
+    # time = info['datetime']['time']
     myms = info['ms']
     clearcal(myms)
     delmod(myms)
@@ -171,36 +168,13 @@ def deconvolve_VLA(info):
     target = info['fields']['target']
     myms_target = myms.replace('.ms', '_target.ms')
     imagename = cfg.PATH_images + '/' + myms.replace('.ms', '')
-    cell_auto, imsize_auto, _ = au.pickCellSize(vis = myms, npix = 8, imsize = True)
-    cell = cell_auto if cfg.CELL == '' else cfg.CELL
-    imsize = imsize_auto if cfg.IMSIZE == '' else cfg.IMSIZE
     split(vis = myms,
           outputvis = myms_target,
           field = target,
           datacolumn = 'corrected')
-    jocelyn_clean(ms = myms_target,
+    tools.jclean(ms = myms_target,
                   datacolumn = 'data',
-                  imagename = imagename,
-                  imsize = imsize,
-                  cell = cell,
-                  wprojplanes = cfg.WPROJPLANES,
-                  pblimit = cfg.PBLIMIT,
-                  deconvolver = cfg.DECONVOLVER,
-                  scales = cfg.SCALES,
-                  nterms = cfg.NTERMS,
-                  weighting = cfg.WEIGHTING,
-                  robust = cfg.ROBUST,
-                  niter = cfg.NITER,
-                  nsigma = cfg.NSIGMA,
-                  interactive = cfg.INTERACTIVE,
-                  usemask = cfg.USEMASK,
-                  pbmask = cfg.PBMASK,
-                  sidelobethreshold = cfg.SIDELOBETHRESHOLD,
-                  noisethreshold = cfg.NOISETHRESHOLD,
-                  lownoisethreshold = cfg.LOWNOISETHRESHOLD,
-                  minbeamfrac = cfg.MINBEAMFRAC,
-                  fastnoise = False,
-                  parallel = cfg.PARALLEL)
+                  imagename = imagename)
     tools.jocelyn_log('Image deconvolved')
 
 def calibrate_ATCA(info):
@@ -314,7 +288,7 @@ def selfcal_ATCA(info):
 
     imagename = cfg.PATH_images + '/' + myms.replace('.ms', '_init')
     nsigmas = [10.0, 7.0, 5.0, 4.0, 3.0]
-    jocelyn_clean(ms = myms_selfcal,
+    tools.jclean(ms = myms_selfcal,
                   field = target,
                   datacolumn = 'data',
                   imagename = imagename,
@@ -336,7 +310,7 @@ def selfcal_ATCA(info):
                  field = target,
                  gaintable = gaintables)
         imagename = cfg.PATH_images + '/' + myms_selfcal.replace('.ms', str(i + 1))
-        jocelyn_clean(ms = myms_selfcal,
+        tools.jclean(ms = myms_selfcal,
                       field = target,
                       imagename = imagename,
                       nsigma = nsigmas[i + 1])
@@ -356,69 +330,13 @@ def selfcal_ATCA(info):
                 field = target,
                 gaintable = gaintables)
     imagename = cfg.PATH_images + '/' + myms_selfcal.replace('.ms', '_amp')
-    jocelyn_clean(ms = myms_selfcal,
+    tools.jclean(ms = myms_selfcal,
                   field = target,
                   imagename = imagename,
                   nsigma = nsigmas[-1])
     tools.jocelyn_log('Self-calibration completed')
     myms_target = myms.replace('.ms', '_target.ms')
     export_ms(myms_selfcal, myms_target, target)
-
-def jocelyn_clean(ms = '',
-                  field = '',
-                  datacolumn = 'corrected',
-                  imagename = '',
-                  imsize = cfg.IMSIZE,
-                  cell = cfg.CELL,
-                  gridder = cfg.GRIDDER,
-                  wprojplanes = cfg.WPROJPLANES,
-                  pblimit = cfg.PBLIMIT,
-                  deconvolver = cfg.DECONVOLVER,
-                  scales = cfg.SCALES,
-                  nterms = cfg.NTERMS,
-                  weighting = cfg.WEIGHTING,
-                  robust = cfg.ROBUST,
-                  niter = cfg.NITER,
-                  nsigma = cfg.NSIGMA,
-                  interactive = cfg.INTERACTIVE,
-                  usemask = cfg.USEMASK,
-                  pbmask = cfg.PBMASK,
-                  sidelobethreshold = cfg.SIDELOBETHRESHOLD,
-                  noisethreshold = cfg.NOISETHRESHOLD,
-                  lownoisethreshold = cfg.LOWNOISETHRESHOLD,
-                  minbeamfrac = cfg.MINBEAMFRAC,
-                  fastnoise = False,
-                  savemodel = 'modelcolumn',
-                  parallel = cfg.PARALLEL):
-    cell_auto, imsize_auto, _ = au.pickCellSize(vis = ms, npix = 8, imsize = True)
-    _cell_ = cell_auto if cell == '' else cell
-    _imsize_ = imsize_auto if imsize == '' else imsize
-    tclean(vis = ms,
-           field = field,
-           datacolumn = datacolumn,
-           imagename = imagename,
-           imsize = _imsize_,
-           cell = _cell_,
-           gridder = gridder,
-           wprojplanes = wprojplanes,
-           pblimit = pblimit,
-           deconvolver = deconvolver,
-           scales = scales,
-           nterms = nterms,
-           weighting = weighting,
-           robust = robust,
-           niter = niter,
-           nsigma = nsigma,
-           interactive = interactive,
-           usemask = usemask,
-           pbmask = pbmask,
-           sidelobethreshold = sidelobethreshold,
-           noisethreshold = noisethreshold,
-           lownoisethreshold = lownoisethreshold,
-           minbeamfrac = minbeamfrac,
-           fastnoise = fastnoise,
-           savemodel = savemodel,
-           parallel = parallel)
 
 def export_ms(myms, myms_target, target = ''):
     split(vis = myms,

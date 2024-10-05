@@ -1,10 +1,10 @@
 import glob, sys, os
 from casatasks import concat, gaincal, applycal
-from calibratimage import jocelyn_clean
+import tools
 import config as cfg
 
 def selfcal(myms, imagename):
-    jocelyn_clean(ms = myms,
+    tools.jclean(ms = myms,
                   datacolumn = 'data',
                   imagename = imagename + '_init')
     n_rounds_p = 3
@@ -22,7 +22,7 @@ def selfcal(myms, imagename):
         gaintables.append(SC)
         applycal(vis = myms,
                  gaintable = gaintables)
-        jocelyn_clean(ms = myms,
+        tools.jclean(ms = myms,
                       imagename = img_name)
     n_rounds_ap = 2
     for round in range(n_rounds_ap):
@@ -39,16 +39,15 @@ def selfcal(myms, imagename):
         gaintables.append(SC)
         applycal(vis = myms,
                  gaintable = gaintables)
-        jocelyn_clean(ms = myms,
+        tools.jclean(ms = myms,
                       imagename = img_name)
-    jocelyn_clean(ms = myms,
+    tools.jclean(ms = myms,
                   imagename = imagename + '_final',
                   usemask = 'user',
                   pbmask = 0.2,
                   savemodel = 'none')
 
-def main(path_stack):
-    os.chdir(path_stack)
+def main():
     list_of_target_ms = glob.glob(f'../*/{cfg.BAND}band/*_target.ms')
     list_of_target_ms.sort()
     myms = '_'.join([cfg.SOURCE, cfg.TELESCOPE, cfg.BAND + 'band.ms'])
@@ -59,11 +58,11 @@ def main(path_stack):
     if cfg.STACK_SELFCAL:
         selfcal(myms, imagename)
     else:
-        jocelyn_clean(ms = myms,
+        tools.jclean(ms = myms,
                       datacolumn = 'data',
                       imagename = imagename,
                       usemask = 'user',
                       savemodel = 'none')
 
 if __name__ == "__main__":
-    main(sys.argv[1])
+    main()
