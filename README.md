@@ -53,7 +53,7 @@ Notes:
     ```
     python jocelyn/0_INFO.py i,g,f
     ...
-    python jocelyn/1GC.py c,i
+    python jocelyn/1GC.py f,c,i
     ...
     python jocelyn/2GC.py
     ```
