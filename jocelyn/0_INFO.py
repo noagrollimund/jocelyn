@@ -29,9 +29,9 @@ def get_info(master_ms: str) -> dict:
     list_obs = listobs(master_ms, spw = spw)
     target, fcal = tools.get_target_fcal(master_ms)
     pcal = tools.get_pcal(list_obs, master_ms)
-    scans = tools.check_scans(list_obs, master_ms)
+    scans = tools.check_scans(list_obs, master_ms) if cfg.SCANS == 'auto' else cfg.SCANS
     MJD, date, time = tools.get_date_time(list_obs, master_ms, target)
-    myms = '_'.join([cfg.SOURCE, cfg.TELESCOPE, date, cfg.BAND + 'band.ms'])
+    myms = '_'.join([cfg.TARGET, cfg.TELESCOPE, date, cfg.BAND + 'band.ms'])
 
     # Save the gathered information into a JSON file.
     info = {

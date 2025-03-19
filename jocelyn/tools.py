@@ -10,6 +10,18 @@ import config as cfg
 sys.path.append(os.path.expanduser('~') + '/analysis_scripts/')
 import analysisUtils as au
 
+BAND_DEFINITIONS = {
+    'L':[1e9, 2e9],
+    'S':[2e9, 4e9],
+    'C':[4e9, 8e9],
+    'X':[8e9, 12e9],
+    'Ku':[12e9, 18e9],
+    'K':[18.0e9, 26.5e9],
+    'Ka':[26.5e9, 40.0e9],
+    'Q':[40.0e9, 50.0e9],
+    '':[0, 100e9]
+    }
+
 def jocelyn_log(message):
     print('--/jocelyn/--: ' + message)
 
@@ -25,7 +37,7 @@ def select_keys_with_kwrd(dict, keyword):
     return [key for key in dict.keys() if key[:len(keyword)] == keyword]
 
 def get_spw(myms, band_name):
-    freq_min, freq_max = cfg.BAND_DEFINITIONS[band_name]
+    freq_min, freq_max = BAND_DEFINITIONS[band_name]
     tb = table(myms + '/SPECTRAL_WINDOW')
     central_freqs = tb.getcol('REF_FREQUENCY')
     tb.close()
@@ -46,27 +58,27 @@ def get_target_fcal(myms):
         for field in fields:
             if field in cfg.TARGET:
                 target_name = field
-    if type(cfg.FCAL) == str:
-        fcal_name = cfg.FCAL
+    if type(cfg.CAL_PRIMARY) == str:
+        fcal_name = cfg.CAL_PRIMARY
     else:
         tb = table(myms + '/FIELD')
         fields = tb.getcol('NAME')
         tb.close()
         for field in fields:
-            if field in cfg.FCAL:
+            if field in cfg.CAL_PRIMARY:
                 fcal_name = field
     return target_name, fcal_name
 
 def get_pcal(obs, myms):
-    if type(cfg.PCAL) == str:
-        pcal_name = cfg.PCAL
+    if type(cfg.CAL_SECONDARY) == str:
+        pcal_name = cfg.CAL_SECONDARY
     else:
         tb = table(myms + '/FIELD')
         fields = tb.getcol('NAME')
         tb.close()
         for field in fields:
             scans_all = get_scans(obs)
-            if field in cfg.PCAL:
+            if field in cfg.CAL_SECONDARY:
                 scans = check_scans(obs, myms, field)
                 if scans != []:
                     scan_idx = scans_all.index(int(scans[0]))
@@ -109,7 +121,7 @@ def check_scans(obs, myms, field_name_select = None):
         field_name = str(obs[scan_name]['0']['FieldName'])
         is_target = field_name == target
         is_fcal = field_name == fcal
-        is_pcal_close = field_name in cfg.PCAL and is_close_to_target(obs, myms, i)
+        is_pcal_close = field_name in cfg.CAL_SECONDARY and is_close_to_target(obs, myms, i)
         if field_name_select != None:
             good_field = field_name == field_name_select
             if (is_target or is_fcal or is_pcal_close) and good_field:
@@ -215,7 +227,7 @@ def find_best_solint(myms, target, refant):
     tb = table()
     _, ax = plt.subplots()
     for solint in ['int', '20s', '40s', '80s', '160s', '320s', '640s']:
-        caltable = cfg.PATH_tables + 'selfcal_' + solint
+        caltable = cfg.PATH_TABLES + 'selfcal_' + solint
         gaincal(vis = myms,
                 caltable = caltable,
                 field = target,
@@ -235,6 +247,7 @@ def find_best_solint(myms, target, refant):
 
 def jclean(ms = '',
            field = '',
+           uvrange = cfg.TCLEAN_UVRANGE,
            datacolumn = 'corrected',
            imagename = '',
            imsize = cfg.IMSIZE,
@@ -264,6 +277,7 @@ def jclean(ms = '',
     _imsize_ = imsize_auto if imsize == '' else imsize
     tclean(vis = ms,
            field = field,
+           uvrange = uvrange,
            datacolumn = datacolumn,
            imagename = imagename,
            imsize = _imsize_,

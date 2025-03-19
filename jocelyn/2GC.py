@@ -12,7 +12,7 @@ def selfcal_ATCA(info):
     # Phase selfcal
     gaintables = []
     for i in range(4):
-        SC = cfg.PATH_tables + 'cal.SC' + str(i + 1)
+        SC = cfg.PATH_TABLES + 'cal.SC' + str(i + 1)
         gaincal(vis = myms_target,
                 caltable = SC,
                 solint = '80s',
@@ -23,12 +23,12 @@ def selfcal_ATCA(info):
         gaintables.append(SC)
         applycal(vis = myms_target,
                  gaintable = gaintables)
-        imagename = cfg.PATH_images + '/' + myms.replace('.ms', '_selfcal' + str(i + 1))
+        imagename = cfg.PATH_IMAGES + '/' + myms.replace('.ms', '_selfcal' + str(i + 1))
         tools.jclean(ms = myms_target,
                      imagename = imagename,
                      nsigma = nsigmas[i])
     # Amplitude selfcal
-    SCa = cfg.PATH_tables + 'cal.SCa'
+    SCa = cfg.PATH_TABLES + 'cal.SCa'
     gaincal(vis = myms_target,
             caltable = SCa,
             solint = '160s',
@@ -40,7 +40,7 @@ def selfcal_ATCA(info):
     gaintables.append(SCa)
     applycal(vis = myms_target,
             gaintable = gaintables)
-    imagename = cfg.PATH_images + '/' + myms.replace('.ms', '_selfcal_ap')
+    imagename = cfg.PATH_IMAGES + '/' + myms.replace('.ms', '_selfcal_ap')
     tools.jclean(ms = myms_target,
                  imagename = imagename,
                  nsigma = nsigmas[-1])

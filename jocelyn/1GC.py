@@ -25,15 +25,15 @@ def calibrate_VLA(info):
     myms = info['ms']
     clearcal(myms)
     delmod(myms)
-    if not os.path.exists(cfg.PATH_tables):
-        os.makedirs(cfg.PATH_tables)
+    if not os.path.exists(cfg.PATH_TABLES):
+        os.makedirs(cfg.PATH_TABLES)
     refant = tools.find_best_refant(info)
 
     # Antenna position corrections
     # working_ants = tools.antenna_dist2cofa(myms)
     # antennas, antpos_corr = tools.VLA_corrected_baselines(date, time, working_ants)
     # gencal(vis = myms,
-    #        caltable = cfg.PATH_tables + 'antpos.cal',
+    #        caltable = cfg.PATH_TABLES + 'antpos.cal',
     #        caltype = 'antposvla',
     #        antenna = antennas,
     #        parameter = antpos_corr)
@@ -44,14 +44,14 @@ def calibrate_VLA(info):
         # Opacity corrections
         tau = plotweather(vis = myms, doPlot = False)
         gencal(vis = myms,
-               caltable = cfg.PATH_tables + 'opacity.cal',
+               caltable = cfg.PATH_TABLES + 'opacity.cal',
                caltype = 'opac',
                parameter = tau,
                spw = '0, 1')
 
     # Gaincurves and antenna efficiencies
     gencal(vis = myms,
-           caltable = cfg.PATH_tables + 'gaincurve.cal',
+           caltable = cfg.PATH_TABLES + 'gaincurve.cal',
            caltype = 'gceff')
 
     # Set up the model for the flux calibrator
@@ -60,10 +60,10 @@ def calibrate_VLA(info):
 
     if high_frequencies:
         # Gain calibration
-        # tables = [cfg.PATH_tables + table for table in ['antpos.cal', 'opacity.cal', 'gaincurve.cal']]
-        tables = [cfg.PATH_tables + table for table in ['opacity.cal', 'gaincurve.cal']]
+        # tables = [cfg.PATH_TABLES + table for table in ['antpos.cal', 'opacity.cal', 'gaincurve.cal']]
+        tables = [cfg.PATH_TABLES + table for table in ['opacity.cal', 'gaincurve.cal']]
         gaincal(vis = myms,
-                caltable = cfg.PATH_tables + 'intphase.gcal',
+                caltable = cfg.PATH_TABLES + 'intphase.gcal',
                 field = ','.join([fcal, pcal]),
                 solint = 'int',
                 refant = refant,
@@ -72,7 +72,7 @@ def calibrate_VLA(info):
                 calmode = 'p',
                 gaintable = tables)
         gaincal(vis = myms,
-                caltable = cfg.PATH_tables + 'scanphase.gcal',
+                caltable = cfg.PATH_TABLES + 'scanphase.gcal',
                 field = ','.join([fcal, pcal]),
                 solint = 'inf',
                 refant = refant,
@@ -81,45 +81,45 @@ def calibrate_VLA(info):
                 calmode = 'p',
                 gaintable = tables)
         gaincal(vis = myms,
-                caltable = cfg.PATH_tables + 'amp.gcal',
+                caltable = cfg.PATH_TABLES + 'amp.gcal',
                 field = ','.join([fcal, pcal]),
                 solint = 'inf',
                 refant = refant,
                 minsnr = 2.0,
                 calmode = 'ap',
-                gaintable = tables + [cfg.PATH_tables + 'intphase.gcal'])
+                gaintable = tables + [cfg.PATH_TABLES + 'intphase.gcal'])
         
         # Derive the flux scale for the phase cal
         fluxscale(vis = myms,
-                  caltable = cfg.PATH_tables + 'amp.gcal',
-                  fluxtable = cfg.PATH_tables + 'flux.cal',
+                  caltable = cfg.PATH_TABLES + 'amp.gcal',
+                  fluxtable = cfg.PATH_TABLES + 'flux.cal',
                   reference = fcal,
                   incremental = True)
         
         # Apply calibration
-        tables.extend([cfg.PATH_tables + 'flux.cal', cfg.PATH_tables + 'amp.gcal'])
+        tables.extend([cfg.PATH_TABLES + 'flux.cal', cfg.PATH_TABLES + 'amp.gcal'])
         applycal(vis = myms,
                 field = target, 
-                gaintable = tables + [cfg.PATH_tables + 'scanphase.gcal'],
+                gaintable = tables + [cfg.PATH_TABLES + 'scanphase.gcal'],
                 gainfield = len(tables) * [''] + [pcal, pcal, pcal],
                 calwt = False)
         applycal(vis = myms,
                 field = pcal,
-                gaintable = tables + [cfg.PATH_tables + 'intphase.gcal'],
+                gaintable = tables + [cfg.PATH_TABLES + 'intphase.gcal'],
                 gainfield = len(tables) * [''] + [pcal, pcal, pcal],
                 calwt = False)
         applycal(vis = myms,
                 field = fcal, 
-                gaintable = tables + [cfg.PATH_tables + 'intphase.gcal'],
+                gaintable = tables + [cfg.PATH_TABLES + 'intphase.gcal'],
                 gainfield = len(tables) * [''] + [fcal, fcal, fcal],
                 calwt = False)
 
     else:
         # Gain calibration
-        # tables = [cfg.PATH_tables + table for table in ['antpos.cal', 'gaincurve.cal']]
-        tables = [cfg.PATH_tables + table for table in ['gaincurve.cal']]
+        # tables = [cfg.PATH_TABLES + table for table in ['antpos.cal', 'gaincurve.cal']]
+        tables = [cfg.PATH_TABLES + table for table in ['gaincurve.cal']]
         gaincal(vis = myms,
-            caltable = cfg.PATH_tables + 'gaintable.g1',
+            caltable = cfg.PATH_TABLES + 'gaintable.g1',
             field = fcal,
             solint = '30s',
             refant = refant,
@@ -128,7 +128,7 @@ def calibrate_VLA(info):
             gaintable = tables)
 
         gaincal(vis = myms,
-            caltable = cfg.PATH_tables + 'gaintable.g1',
+            caltable = cfg.PATH_TABLES + 'gaintable.g1',
             field = pcal,
             solint = '30s',
             refant = refant,
@@ -139,13 +139,13 @@ def calibrate_VLA(info):
 
         # Derive the flux scale for the phase cal
         fluxscale(vis = myms,
-                  caltable = cfg.PATH_tables + 'gaintable.g1',
-                  fluxtable = cfg.PATH_tables + 'flux.cal',
+                  caltable = cfg.PATH_TABLES + 'gaintable.g1',
+                  fluxtable = cfg.PATH_TABLES + 'flux.cal',
                   reference = fcal,
                   transfer = pcal)
         
         # Apply calibration
-        tables.append(cfg.PATH_tables + 'flux.cal')
+        tables.append(cfg.PATH_TABLES + 'flux.cal')
         applycal(vis = myms,
                 field = target, 
                 gaintable = tables,
@@ -167,7 +167,7 @@ def image_VLA(info):
     myms = info['ms']
     target = info['fields']['target']
     myms_target = myms.replace('.ms', '_target.ms')
-    imagename = cfg.PATH_images + '/' + myms.replace('.ms', '')
+    imagename = cfg.PATH_IMAGES + '/' + myms.replace('.ms', '')
     split(vis = myms,
           outputvis = myms_target,
           field = target,
@@ -185,14 +185,14 @@ def calibrate_ATCA(info):
     refant = tools.find_best_refant(info, nb_ctr_ant = 3)
     clearcal(myms)
     delmod(myms)
-    if not os.path.exists(cfg.PATH_tables):
-        os.makedirs(cfg.PATH_tables)
-    G0 = cfg.PATH_tables + 'cal.G0'
-    K0 = cfg.PATH_tables + 'cal.K0'
-    B0 = cfg.PATH_tables + 'cal.B0'
-    G1 = cfg.PATH_tables + 'cal.G1'
-    F0 = cfg.PATH_tables + 'cal.F0'
-    D0 = cfg.PATH_tables + 'cal.D0'
+    if not os.path.exists(cfg.PATH_TABLES):
+        os.makedirs(cfg.PATH_TABLES)
+    G0 = cfg.PATH_TABLES + 'cal.G0'
+    K0 = cfg.PATH_TABLES + 'cal.K0'
+    B0 = cfg.PATH_TABLES + 'cal.B0'
+    G1 = cfg.PATH_TABLES + 'cal.G1'
+    F0 = cfg.PATH_TABLES + 'cal.F0'
+    D0 = cfg.PATH_TABLES + 'cal.D0'
 
     # Initial Flux Density Scaling
     setjy(vis = myms,
@@ -284,7 +284,7 @@ def calibrate_ATCA(info):
 def image_ATCA(info):
     myms = info['ms']
     myms_target = myms.replace('.ms', '_target.ms')
-    imagename = cfg.PATH_images + '/' + myms.replace('.ms', '')
+    imagename = cfg.PATH_IMAGES + '/' + myms.replace('.ms', '')
     tools.jclean(ms = myms_target,
                  datacolumn = 'data',
                  imagename = imagename,
