@@ -120,10 +120,10 @@ def basic_flagging(info: dict):
     flagdata(vis = myms,
              mode = 'clip',
              clipminmax = [0.0, 50.0])
+    flagdata(vis = myms,
+             mode = 'shadow',
+             tolerance = 0.0)
     if cfg.TELESCOPE == 'VLA':
-        flagdata(vis = myms,
-                mode = 'shadow',
-                tolerance = 0.0)
         flag_cal_uvrange(myms, fcal, pcal)
     tools.jocelyn_log('Basic flagging completed')
 
