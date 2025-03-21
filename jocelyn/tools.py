@@ -272,7 +272,7 @@ def jclean(ms = '',
            fastnoise = False,
            savemodel = 'modelcolumn',
            parallel = cfg.PARALLEL):
-    cell_auto, imsize_auto, _ = au.pickCellSize(vis = ms, npix = 8, imsize = True)
+    cell_auto, imsize_auto, _ = au.pickCellSize(vis = ms, npix = 5, imsize = True)
     _cell_ = cell_auto if cell == '' else cell
     _imsize_ = imsize_auto if imsize == '' else imsize
     tclean(vis = ms,
