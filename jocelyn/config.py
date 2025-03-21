@@ -42,9 +42,9 @@ ROBUST = 0
 
 # Deconvolution
 DECONVOLVER = 'hogbom'
-SCALES = [0, 5, 10, 25, 50]
+SCALES = []
 NTERMS = 2
-NITER = 10000
+NITER = 50000
 NSIGMA = 3
 INTERACTIVE = False
 
