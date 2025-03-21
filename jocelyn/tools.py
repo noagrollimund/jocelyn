@@ -246,7 +246,7 @@ def find_best_solint(myms, target, refant):
     plt.savefig('SNR_gaincal_SC_vs_solint.png')
 
 def jclean(ms = '',
-           field = '',
+           field = '0',
            uvrange = cfg.TCLEAN_UVRANGE,
            datacolumn = 'corrected',
            imagename = '',
