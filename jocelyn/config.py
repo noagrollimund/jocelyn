@@ -60,6 +60,11 @@ MINBEAMFRAC = 0.15
 PARALLEL = False
 
 
+#----- Self-calibration ----------------------------------#
+N_ROUNDS_SELFCAL = 4
+DO_AP_SELFCAL = True
+
+
 #----- Stacking ------------------------------------------#
 STACK_OBS = True
 STACK_WEIGHTS = []
