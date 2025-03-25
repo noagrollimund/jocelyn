@@ -23,5 +23,7 @@ def slurm_jocelyn():
     instruct += f"mpirun singularity exec {cfg.CASA_CONTAINER_PATH} python {cfg.PATH_CODE}2GC.py\n"
     instruct += 'echo "****ELAPSED "$SECONDS""\n'
     slurm_file = f'{cfg.PATH_SCRIPTS}JOCELYN_{cfg.BAND}-band.sh'
+    os.makedirs(cfg.PATH_SCRIPTS)
+    os.makedirs(cfg.PATH_LOGS)
     write_slurm(slurm_file, instruct)
     return slurm_file
