@@ -29,6 +29,6 @@ def slurm_main(path):
     slurm_file = path + '/submit_jobs.sh'
     kill_file = path + "/kill_jobs.sh"
     instruct = "#!/bin/bash\n"
-    instruct += f"JOCELYN=`sbatch {path}JOCELYN.sh" + " | awk '{print $4}'`\n"
+    instruct += f"JOCELYN=`sbatch {path}/JOCELYN.sh" + " | awk '{print $4}'`\n"
     instruct += f"echo 'scancel JOCELYN' > {kill_file}"
     write_slurm(slurm_file, instruct)
