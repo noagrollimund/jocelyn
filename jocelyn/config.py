@@ -65,11 +65,5 @@ N_ROUNDS_SELFCAL = 4
 DO_AP_SELFCAL = True
 
 
-#----- Stacking ------------------------------------------#
-STACK_OBS = True
-STACK_WEIGHTS = []
-STACK_SELFCAL = True
-
-
 #----- Cluster settings ----------------------------------#
 CASA_CONTAINER_PATH = '/idia/software/containers/casa-6.simg'
