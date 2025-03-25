@@ -17,6 +17,7 @@ def slurm_jocelyn():
     instruct += "#SBATCH --mem=64GB\n"
     instruct += f"#SBATCH --output={cfg.PATH_LOGS}JOCELYN_{cfg.BAND}-band.log\n"
     instruct += f"cd {cfg.PATH_OBS}\n"
+    instruct += "module load anaconda3\n"
     instruct += "module load openmpi/4.0.3\n"
     instruct += f"singularity exec {cfg.CASA_CONTAINER_PATH} python {cfg.PATH_CODE}0_INFO.py\n"
     instruct += f"mpirun singularity exec {cfg.CASA_CONTAINER_PATH} python {cfg.PATH_CODE}1GC.py\n"
