@@ -12,10 +12,10 @@ BAND = 'C'
 #----- Paths ---------------------------------------------#
 PATH_OBS = os.getcwd()
 PATH_CODE = PATH_OBS + '/jocelyn/'
-PATH_BAND = PATH_OBS + f'/{BAND}band/'
+PATH_BAND = PATH_OBS + f'/{BAND}-band/'
 PATH_JSON = PATH_BAND + 'info.json'
-PATH_TABLES = PATH_BAND + 'tables/'
-PATH_IMAGES = PATH_BAND + 'images/'
+PATH_TABLES = PATH_BAND + 'TABLES/'
+PATH_IMAGES = PATH_BAND + 'IMAGES/'
 
 
 #----- Flagging ------------------------------------------#
