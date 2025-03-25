@@ -12,6 +12,8 @@ BAND = 'C'
 #----- Paths ---------------------------------------------#
 PATH_OBS = os.getcwd()
 PATH_CODE = PATH_OBS + '/jocelyn/'
+PATH_SCRIPTS = PATH_OBS + '/SCRIPTS/'
+PATH_LOGS = PATH_OBS + '/LOGS/'
 PATH_BAND = PATH_OBS + f'/{BAND}-band/'
 PATH_JSON = PATH_BAND + 'info.json'
 PATH_TABLES = PATH_BAND + 'TABLES/'
