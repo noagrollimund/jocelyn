@@ -23,7 +23,7 @@ def selfcal_ATCA(info):
         gaintables.append(SC)
         applycal(vis = myms_target,
                  gaintable = gaintables)
-        imagename = cfg.PATH_IMAGES + '/' + myms.replace('.ms', '_selfcal' + str(i + 1))
+        imagename = cfg.PATH_IMAGES + myms.split('/')[-1].replace('.ms', '_selfcal' + str(i + 1))
         tools.jclean(ms = myms_target,
                      imagename = imagename,
                      nsigma = nsigmas[i])
@@ -41,7 +41,7 @@ def selfcal_ATCA(info):
         gaintables.append(SCa)
         applycal(vis = myms_target,
                 gaintable = gaintables)
-        imagename = cfg.PATH_IMAGES + '/' + myms.replace('.ms', '_selfcal_ap')
+        imagename = cfg.PATH_IMAGES + myms.split('/')[-1].replace('.ms', '_selfcal_ap')
         tools.jclean(ms = myms_target,
                         imagename = imagename,
                         nsigma = nsigmas[-1])

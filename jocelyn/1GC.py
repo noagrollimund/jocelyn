@@ -167,7 +167,7 @@ def image_VLA(info):
     myms = info['ms']
     target = info['fields']['target']
     myms_target = myms.replace('.ms', '_target.ms')
-    imagename = cfg.PATH_IMAGES + '/' + myms.replace('.ms', '')
+    imagename = cfg.PATH_IMAGES + myms.split('/')[-1].replace('.ms', '')
     split(vis = myms,
           outputvis = myms_target,
           field = target,
@@ -284,7 +284,7 @@ def calibrate_ATCA(info):
 def image_ATCA(info):
     myms = info['ms']
     myms_target = myms.replace('.ms', '_target.ms')
-    imagename = cfg.PATH_IMAGES + '/' + myms.replace('.ms', '')
+    imagename = cfg.PATH_IMAGES + myms.split('/')[-1].replace('.ms', '')
     tools.jclean(ms = myms_target,
                  datacolumn = 'data',
                  imagename = imagename,
