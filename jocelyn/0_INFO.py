@@ -107,7 +107,7 @@ def basic_flagging(info: dict):
     """
     Deterministic flagging (quack, clip, shadowing, UV range).
     """
-    myms = cfg.PATH_BAND + info['ms']
+    myms = info['ms']
     fcal = info['fields']['fcal']
     pcal = info['fields']['pcal']
     flagdata(vis = myms,
