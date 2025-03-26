@@ -68,4 +68,4 @@ DO_AP_SELFCAL = True
 
 
 #----- Cluster settings ----------------------------------#
-CASA_CONTAINER_PATH = '/idia/software/containers/casa-6.simg'
+CASA_CONTAINER_PATH = '/idia/software/containers/casa-6.5.0-modular.sif'
