@@ -19,9 +19,9 @@ def slurm_jocelyn():
     instruct += f"cd {cfg.PATH_OBS}\n"
     instruct += "module load anaconda3\n"
     instruct += "module load openmpi/4.0.3\n"
-    instruct += f"singularity exec {cfg.CASA_CONTAINER_PATH} python {cfg.PATH_CODE}0_INFO.py\n"
-    instruct += f"mpirun singularity exec {cfg.CASA_CONTAINER_PATH} python {cfg.PATH_CODE}1GC.py\n"
-    instruct += f"mpirun singularity exec {cfg.CASA_CONTAINER_PATH} python {cfg.PATH_CODE}2GC.py\n"
+    instruct += f"singularity exec {cfg.CASA_CONTAINER_PATH} python {cfg.PATH_JOCELYN}0_INFO.py\n"
+    instruct += f"mpirun singularity exec {cfg.CASA_CONTAINER_PATH} python {cfg.PATH_JOCELYN}1GC.py\n"
+    instruct += f"mpirun singularity exec {cfg.CASA_CONTAINER_PATH} python {cfg.PATH_JOCELYN}2GC.py\n"
     instruct += 'echo "****ELAPSED "$SECONDS""\n'
     slurm_file = f'{cfg.PATH_SCRIPTS}JOCELYN_{cfg.BAND}-band.sh'
     os.makedirs(cfg.PATH_SCRIPTS)

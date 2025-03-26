@@ -82,7 +82,7 @@ def flag_cal_uvrange(myms: str, fcal: str, pcal: str):
     for cal_field in [pcal, fcal]:
         cal_name = cal_field.split('_')[0]
         # Load the recommanded UV range
-        UVrange = pd.read_csv(cfg.PATH_CODE + f'data/calibrators_UVrange/{cal_name}.csv', sep = '\t')
+        UVrange = pd.read_csv(cfg.PATH_JOCELYN + f'data/calibrators_UVrange/{cal_name}.csv', sep = '\t')
         UVmin = UVrange[UVrange['BAND'] == cfg.BAND]['UVMIN'].iloc[0]
         UVmax = UVrange[UVrange['BAND'] == cfg.BAND]['UVMAX'].iloc[0]
         # Flag calibrators outside the UV range
