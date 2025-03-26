@@ -132,7 +132,7 @@ def main(options: str):
     Run the first steps of the pipeline: import the archive data (i), gather some information
     about the observation (g) and apply basic flagging (f).
     """
-    master_ms = cfg.PATH_OBS + '/master.ms'
+    master_ms = cfg.PATH_OBS + 'master.ms'
     if options == '': # All the steps
         import_archive(master_ms)
         info = get_info(master_ms)
