@@ -60,7 +60,7 @@ def split_ms(master_ms: str, info: dict):
     """
     Create a new MS with the fields and spectral windows of interest.
     """
-    myms = cfg.PATH_BAND + info['ms']
+    myms = info['ms']
     spw = info['spw']
     target = info['fields']['target']
     pcal = info['fields']['pcal']
