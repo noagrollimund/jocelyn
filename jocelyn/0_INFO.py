@@ -119,7 +119,7 @@ def basic_flagging(info: dict):
              clipzeros = True)
     flagdata(vis = myms,
              mode = 'clip',
-             clipminmax = [0.0, 50.0])
+             clipminmax = [0.0, 100.0])
     flagdata(vis = myms,
              mode = 'shadow',
              tolerance = 0.0)
