@@ -29,20 +29,16 @@ MANUAL_FLAG = True
 #----- Imaging parameters --------------------------------#
 # Data selection
 TCLEAN_UVRANGE = ''
-
 # Image dimensions
 CELL = ''
 IMSIZE = ''
-
 # Gridding
 GRIDDER = 'standard'
 WPROJPLANES = -1
 PBLIMIT = 0.1
-
 # Weighting
 WEIGHTING = 'briggs'
 ROBUST = 0
-
 # Deconvolution
 DECONVOLVER = 'hogbom'
 SCALES = []
@@ -50,15 +46,13 @@ NTERMS = 2
 NITER = 50000
 NSIGMA = 3
 INTERACTIVE = False
-
 # Masking
 USEMASK = 'auto-multithresh'
 PBMASK = 0.0
-SIDELOBETHRESHOLD = 1.8
-NOISETHRESHOLD = 6.0
-LOWNOISETHRESHOLD = 6.0
-MINBEAMFRAC = 0.15
-
+SIDELOBETHRESHOLD = 1.25
+NOISETHRESHOLD = 5.0
+LOWNOISETHRESHOLD = 3.0
+MINBEAMFRAC = 0.1
 # Parallel tclean
 PARALLEL = False
 
