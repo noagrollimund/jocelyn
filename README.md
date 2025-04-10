@@ -28,7 +28,7 @@ You will need a modular version of CASA 6: https://casadocs.readthedocs.io/en/st
 
 4. Edit [`config.py`](config.py) to set your favorite parameters.
 
-5. The first step of the pipeline is to run a script that imports the archive (i), gathers some information about the observation (g) and applies basic (f):
+5. The first step of the pipeline is to run a script that imports the archive (i), gathers some information about the observation (g) and applies basic and auto flagging (f):
 
     ```
     python jocelyn/0_INFO.py
