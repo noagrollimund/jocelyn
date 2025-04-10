@@ -127,6 +127,15 @@ def basic_flagging(info: dict):
         flag_cal_uvrange(myms, fcal, pcal)
     tools.jocelyn_log('Basic flagging completed')
 
+def RFI_flagging(info: dict):
+    """
+    RFI flagging using TFCrop autoflag algorithm.
+    """
+    myms = info['ms']
+    flagdata(vis = myms,
+             mode = 'tfcrop')
+    tools.jocelyn_log('RFI flagging completed')
+
 def main(options: str):
     """
     Run the first steps of the pipeline: import the archive data (i), gather some information
@@ -139,6 +148,8 @@ def main(options: str):
         split_ms(master_ms, info)
         if cfg.BASIC_FLAG:
             basic_flagging(info)
+        if cfg.AUTO_FLAG:
+            RFI_flagging(info)
     else:
         steps = options.replace(' ', '').split(',') # Selection of step(s)
         if 'i' in steps:
@@ -150,6 +161,8 @@ def main(options: str):
             info = tools.info_json()
             if cfg.BASIC_FLAG:
                 basic_flagging(info)
+            if cfg.AUTO_FLAG:
+                RFI_flagging(info)
 
 if __name__ == "__main__":
     options = sys.argv[1] if len(sys.argv) > 1 else ''

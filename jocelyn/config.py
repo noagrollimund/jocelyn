@@ -22,6 +22,7 @@ PATH_IMAGES = PATH_BAND + 'IMAGES/'
 
 #----- Flagging ------------------------------------------#
 BASIC_FLAG = True
+AUTO_FLAG = True
 MANUAL_FLAG = True
 
 
