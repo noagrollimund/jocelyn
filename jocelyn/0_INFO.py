@@ -19,12 +19,12 @@ def import_archive(master_ms: str):
         tools.jocelyn_log(f'{cfg.TELESCOPE} archive imported')
     else:
         tools.jocelyn_log('Master MS found')
-    listobs(master_ms, listfile = master_ms + '.listobs')
 
 def get_info(master_ms: str) -> dict:
     """
     Collect information about the main MS.
     """
+    listobs(master_ms, listfile = master_ms + '.listobs')
     spw, freq = tools.get_spw(master_ms, cfg.BAND)
     list_obs = listobs(master_ms, spw = spw)
     target, fcal = tools.get_target_fcal(master_ms)
