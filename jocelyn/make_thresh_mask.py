@@ -13,4 +13,4 @@ def main(path, imagename, maskname, threshold):
              overwrite = True)
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main(*sys.argv[1:])
