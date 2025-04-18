@@ -300,7 +300,6 @@ def export_ms(myms, myms_target, target = ''):
 def main(options):
     os.chdir(cfg.PATH_BAND)
     info = tools.info_json()
-    tools.jocelyn_log('Information loaded')
     if options == '':
         if cfg.MANUAL_FLAG:
             manual_flagging(info)

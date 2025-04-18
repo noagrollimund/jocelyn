@@ -27,8 +27,6 @@ MANUAL_FLAG = True
 
 
 #----- Imaging parameters --------------------------------#
-# Data selection
-TCLEAN_UVRANGE = ''
 # Image dimensions
 CELL = ''
 IMSIZE = ''
@@ -48,8 +46,9 @@ NSIGMA = 3
 INTERACTIVE = False
 # Masking
 USEMASK = 'auto-multithresh'
+MASK = ''
 PBMASK = 0.0
-SIDELOBETHRESHOLD = 1.25
+SIDELOBETHRESHOLD = 1.5
 NOISETHRESHOLD = 5.0
 LOWNOISETHRESHOLD = 3.0
 MINBEAMFRAC = 0.1
@@ -59,8 +58,12 @@ PARALLEL = False
 
 #----- Self-calibration ----------------------------------#
 N_ROUNDS_SELFCAL = 4
-DO_AP_SELFCAL = True
+AP_SELFCAL = True
 
+
+#----- Imaging of compact sources ------------------------#
+TCLEAN_UVRANGE = ''
+MASK_THRESHOLD = 1e-3
 
 #----- Cluster settings ----------------------------------#
 CASA_CONTAINER_PATH = '/idia/software/containers/casa-6.5.0-modular.sif'

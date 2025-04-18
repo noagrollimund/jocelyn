@@ -23,12 +23,13 @@ BAND_DEFINITIONS = {
     }
 
 def jocelyn_log(message):
-    print('--/jocelyn/--: ' + message)
+    print('\n--/jocelyn/--: ' + message)
 
 def info_json(mode = 'r', info = {}):
     with open(cfg.PATH_JSON, mode) as file:
         if mode == 'r':
             info = json.load(file)
+            jocelyn_log('Information loaded')
             return info
         if mode == 'w':
             json.dump(info, file)
@@ -247,7 +248,7 @@ def find_best_solint(myms, target, refant):
 
 def jclean(ms = '',
            field = '0',
-           uvrange = cfg.TCLEAN_UVRANGE,
+           uvrange = '',
            datacolumn = 'corrected',
            imagename = '',
            imsize = cfg.IMSIZE,
@@ -264,6 +265,7 @@ def jclean(ms = '',
            nsigma = cfg.NSIGMA,
            interactive = cfg.INTERACTIVE,
            usemask = cfg.USEMASK,
+           mask = cfg.MASK,
            pbmask = cfg.PBMASK,
            sidelobethreshold = cfg.SIDELOBETHRESHOLD,
            noisethreshold = cfg.NOISETHRESHOLD,
@@ -294,6 +296,7 @@ def jclean(ms = '',
            nsigma = nsigma,
            interactive = interactive,
            usemask = usemask,
+           mask = mask,
            pbmask = pbmask,
            sidelobethreshold = sidelobethreshold,
            noisethreshold = noisethreshold,

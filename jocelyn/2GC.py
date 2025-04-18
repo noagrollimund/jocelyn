@@ -28,7 +28,7 @@ def selfcal_ATCA(info):
                      imagename = imagename,
                      nsigma = nsigmas[i])
     # Amplitude selfcal
-    if cfg.DO_AP_SELFCAL:
+    if cfg.AP_SELFCAL:
         SCa = cfg.PATH_TABLES + 'cal.SCa'
         gaincal(vis = myms_target,
                 caltable = SCa,
@@ -50,7 +50,6 @@ def selfcal_ATCA(info):
 def main(options):
     os.chdir(cfg.PATH_BAND)
     info = tools.info_json()
-    tools.jocelyn_log('Information loaded')
     if options == '':
         selfcal_ATCA(info)
 
