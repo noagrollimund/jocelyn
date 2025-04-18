@@ -12,10 +12,14 @@ def import_archive(master_ms: str):
     if not os.path.exists(master_ms):
         if cfg.TELESCOPE == 'VLA':
             archive_filename = glob.glob(cfg.PATH_OBS + '/*.exp')
-            importvla(archivefiles = archive_filename, vis = master_ms)
+            importvla(archivefiles = archive_filename,
+                      vis = master_ms)
         elif cfg.TELESCOPE == 'ATCA':
             archive_filename = glob.glob(cfg.PATH_OBS + '/*.C*')
-            importatca(vis = master_ms, files = archive_filename, options = 'birdie, noac')
+            importatca(vis = master_ms,
+                       files = archive_filename,
+                       options = 'birdie, noac',
+                       spw = cfg.ATCA_IMPORT_SPW)
         tools.jocelyn_log(f'{cfg.TELESCOPE} archive imported')
     else:
         tools.jocelyn_log('Master MS found')

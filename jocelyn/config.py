@@ -19,6 +19,9 @@ PATH_JSON = PATH_BAND + 'info.json'
 PATH_TABLES = PATH_BAND + 'TABLES/'
 PATH_IMAGES = PATH_BAND + 'IMAGES/'
 
+#----- Archive import options ----------------------------#
+ATCA_IMPORT_SPW = [-1]
+
 
 #----- Flagging ------------------------------------------#
 BASIC_FLAG = True
@@ -64,6 +67,7 @@ AP_SELFCAL = True
 #----- Imaging of compact sources ------------------------#
 TCLEAN_UVRANGE = ''
 MASK_THRESHOLD = 1e-3
+
 
 #----- Cluster settings ----------------------------------#
 CASA_CONTAINER_PATH = '/idia/software/containers/casa-6.5.0-modular.sif'
